@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="splashTitle">60sp</dimen>
+
+    <dimen name="intro_screen_title_text_sizeSmall">25sp</dimen>
+    <dimen name="intro_screen_title_text_size">40sp</dimen>
+    <dimen name="intro_screen_title_text_marginTop">40dp</dimen>
+    <dimen name="intro_screen_image_marginTop">30dp</dimen>
+    <dimen name="lets_get_started_text_marginTop">25dp</dimen>
+    <dimen name="lets_get_started_text_size">25sp</dimen>
+    <dimen name="intro_text_marginStartEnd">20dp</dimen>
+    <dimen name="intro_text_line_spacing_extra">5dp</dimen>
+    <dimen name="intro_text_marginTop">10dp</dimen>
+    <dimen name="intro_text_marginLeft">30dp</dimen>
+    <dimen name="intro_text_size">16sp</dimen>
+    <dimen name="btn_marginStartEnd">20dp</dimen>
+    <dimen name="intro_screen_sign_in_btn_marginTop">50dp</dimen>
+    <dimen name="btn_paddingTopBottom">8dp</dimen>
+    <dimen name="intro_screen_sign_up_btn_marginTop">15dp</dimen>
+    <dimen name="btn_text_size">18sp</dimen>
+    <dimen name="intro_screen_Img">250dp</dimen>
+
+    <dimen name="register_title">20sp</dimen>
+    <dimen name="register_email_margin">20dp</dimen>
+    <dimen name="register_email_textSize">18sp</dimen>
+    <dimen name="register_create_accSize">30sp</dimen>
+    <dimen name="textInput_padding">15dp</dimen>
+    <dimen name="login_title">20sp</dimen>
+
+
+</resources>

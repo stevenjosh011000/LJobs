@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".SplashActivity"
+    android:background="@drawable/splash2"
+    android:gravity="center"
+    android:orientation="vertical"
+>
+ <TextView
+     android:id="@+id/splashTitle"
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     android:text="@string/app_name"
+     android:layout_gravity="center"
+     android:textColor="@color/black"
+     android:shadowColor="@color/black"
+     android:textStyle="bold"
+     android:textSize="@dimen/splashTitle"/>
+
+ <ImageView
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:src="@drawable/co_working" />
+
+
+
+</LinearLayout>

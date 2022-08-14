@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">LJobs</string>
+    <string name="welcome_text">Welcome</string>
+    <string name="login">Log in</string>
+    <string name="register">Register</string>
+    <string name="image_contentDesc">Search for vacancies from top companies and find your dream career!</string>
+    <string name="emailRg">Enter your email address</string>
+    <string name="passwordRg">Enter your password</string>
+    <string name="nameRg">Enter your name</string>
+    <string name="create_acc">Create Account</string>
+</resources>
