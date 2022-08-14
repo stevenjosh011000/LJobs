@@ -15,7 +15,6 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding?.root)
 
         setUpActionBar()
-//TEddddddddddddddddddddddddddddddaaaaaaa
 
     }
 
