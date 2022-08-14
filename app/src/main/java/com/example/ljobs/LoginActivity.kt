@@ -15,7 +15,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding?.root)
 
         setUpActionBar()
-//addd
+//TEsting   gggg
     }
 
     private fun setUpActionBar(){
