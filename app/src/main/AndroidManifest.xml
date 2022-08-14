@@ -16,11 +16,11 @@
         <activity
             android:name=".LoginActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".RegisterActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".IntroActivity"
             android:exported="false"
