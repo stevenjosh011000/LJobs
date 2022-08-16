@@ -2,24 +2,24 @@ package com.example.ljobs
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
+import androidx.databinding.DataBindingUtil
 import com.example.ljobs.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
 
-    private var binding : ActivityLoginBinding? = null
+    lateinit var binding : ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityLoginBinding.inflate(layoutInflater)
-        setContentView(binding?.root)
+
+        binding = DataBindingUtil.setContentView(this , R.layout.activity_login)
 
         setUpActionBar()
 
     }
 
     private fun setUpActionBar(){
-        setSupportActionBar(binding?.toolbarLoginActivity)
+        setSupportActionBar(binding.toolbarLoginActivity)
 
         val actionBar = supportActionBar
         if (actionBar != null){
@@ -27,6 +27,6 @@ class LoginActivity : AppCompatActivity() {
             actionBar.setHomeAsUpIndicator(R.drawable.arrow_back_24)
         }
 
-        binding?.toolbarLoginActivity?.setNavigationOnClickListener{onBackPressed()}
+        binding.toolbarLoginActivity.setNavigationOnClickListener{onBackPressed()}
     }
 }

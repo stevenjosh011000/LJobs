@@ -10,18 +10,19 @@ import android.os.Handler
 import android.os.Looper
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import com.example.ljobs.databinding.ActivitySplashBinding
 import org.w3c.dom.Text
 
 
 class SplashActivity : AppCompatActivity() {
 
-    private var binding : ActivitySplashBinding? = null
+    lateinit var binding : ActivitySplashBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivitySplashBinding.inflate(layoutInflater)
-        setContentView(binding?.root)
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_splash)
+
         val typeFace: Typeface = Typeface.createFromAsset(assets,"goodTimesRg.otf")
         val title:TextView = findViewById(R.id.splashTitle)
 
@@ -36,7 +37,7 @@ class SplashActivity : AppCompatActivity() {
         ), null, Shader.TileMode.REPEAT)
 
         title.paint.setShader(textShader)
-        binding?.splashTitle?.typeface = typeFace;
+        binding.splashTitle.typeface = typeFace;
 
 
 
