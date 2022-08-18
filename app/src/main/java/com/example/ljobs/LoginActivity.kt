@@ -1,5 +1,6 @@
 package com.example.ljobs
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
@@ -15,6 +16,10 @@ class LoginActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this , R.layout.activity_login)
 
         setUpActionBar()
+
+        binding.btnLogin.setOnClickListener {
+            startActivity(Intent(this,HomeActivity::class.java))
+        }
 
     }
 

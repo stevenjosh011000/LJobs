@@ -3,15 +3,22 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/arecu/AndroidStudioProjects/LJobs/app/src/main/res/drawable/bottom_nav.xml" value="0.1" />
         <entry key="..\:/Users/arecu/AndroidStudioProjects/LJobs/app/src/main/res/drawable/buttonshape.xml" value="0.1" />
+        <entry key="..\:/Users/arecu/AndroidStudioProjects/LJobs/app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.164" />
         <entry key="..\:/Users/arecu/AndroidStudioProjects/LJobs/app/src/main/res/drawable/rectangle.xml" value="0.1285" />
         <entry key="..\:/Users/arecu/AndroidStudioProjects/LJobs/app/src/main/res/drawable/white_button_shape.xml" value="0.1375" />
+        <entry key="..\:/Users/arecu/AndroidStudioProjects/LJobs/app/src/main/res/layout/activity_home.xml" value="0.2390625" />
         <entry key="..\:/Users/arecu/AndroidStudioProjects/LJobs/app/src/main/res/layout/activity_intro.xml" value="0.264" />
         <entry key="..\:/Users/arecu/AndroidStudioProjects/LJobs/app/src/main/res/layout/activity_login.xml" value="0.21927083333333333" />
-        <entry key="..\:/Users/arecu/AndroidStudioProjects/LJobs/app/src/main/res/layout/activity_main.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/arecu/AndroidStudioProjects/LJobs/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Users/arecu/AndroidStudioProjects/LJobs/app/src/main/res/layout/activity_main2.xml" value="0.1265625" />
         <entry key="..\:/Users/arecu/AndroidStudioProjects/LJobs/app/src/main/res/layout/activity_register.xml" value="0.2" />
         <entry key="..\:/Users/arecu/AndroidStudioProjects/LJobs/app/src/main/res/layout/activity_splash.xml" value="0.2" />
+        <entry key="..\:/Users/arecu/AndroidStudioProjects/LJobs/app/src/main/res/layout/fragment_home.xml" value="0.11626139817629179" />
+        <entry key="..\:/Users/arecu/AndroidStudioProjects/LJobs/app/src/main/res/layout/fragment_profile.xml" value="0.1094224924012158" />
+        <entry key="..\:/Users/arecu/AndroidStudioProjects/LJobs/app/src/main/res/layout/fragment_settings.xml" value="0.10764944275582573" />
+        <entry key="..\:/Users/arecu/AndroidStudioProjects/LJobs/app/src/main/res/menu/menu.xml" value="0.2" />
       </map>
     </option>
   </component>
