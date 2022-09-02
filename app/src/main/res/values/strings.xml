@@ -4,9 +4,9 @@
     <string name="login">Log in</string>
     <string name="register">Register</string>
     <string name="image_contentDesc">Search for vacancies from top companies and find your dream career!</string>
-    <string name="emailRg">Enter your email address</string>
-    <string name="passwordRg">Enter your password</string>
-    <string name="nameRg">Enter your name</string>
+    <string name="emailRg">Email Address</string>
+    <string name="passwordRg">Password</string>
+    <string name="passwordConfirmRg">Confirm password</string>
     <string name="create_acc">Create Account</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
