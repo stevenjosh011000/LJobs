@@ -12,7 +12,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.ljobs.databinding.ActivitySplashBinding
-import org.w3c.dom.Text
 
 
 class SplashActivity : AppCompatActivity() {

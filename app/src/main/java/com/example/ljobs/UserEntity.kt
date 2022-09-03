@@ -1,5 +1,6 @@
 package com.example.ljobs
 
+import android.graphics.Bitmap
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -12,6 +13,13 @@ data class UserEntity (
     val email : String? = null,
     @ColumnInfo(name = "Password")
     val password : String? = null,
+    @ColumnInfo(name = "Name")
+    val name : String? = null,
+    @ColumnInfo(name = "Phone Num")
+    val phoneNum : String? = null,
+    @ColumnInfo(name = "Resume")
+    val resume : String? = null,
+    @ColumnInfo(name = "Role")
+    val role : String? = "1",
 
-
-)
+    )
