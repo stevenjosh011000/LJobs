@@ -9,6 +9,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.example.ljobs.databinding.ActivityRegisterBinding
 import kotlinx.coroutines.launch
+import java.math.BigInteger
+import java.security.MessageDigest
 
 
 class RegisterActivity : AppCompatActivity() {
@@ -25,10 +27,6 @@ class RegisterActivity : AppCompatActivity() {
         binding.btnSignUp.setOnClickListener {
             addUser(userDao)
         }
-
-
-
-
     }
 
     private fun addUser(userDao: UserDao){
@@ -63,15 +61,36 @@ class RegisterActivity : AppCompatActivity() {
             return
         }
 
-        val longValue = Long.MAX_VALUE
         lifecycleScope.launch{
-            userDao.insert(UserEntity(email = email, password = password))
-            Toast.makeText(this@RegisterActivity,"Account Created Successfully", Toast.LENGTH_SHORT).show()
-            binding.emailRg.text?.clear()
-            binding.passwordRg.text?.clear()
-            binding.passwordConRg.text?.clear()
+
+            if(userDao.isEmailExist(email)){
+                Toast.makeText(
+                    this@RegisterActivity,
+                    "Email has been used",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }else {
+
+                userDao.insert(UserEntity(email = email, password = md5(password)))
+                Toast.makeText(
+                    this@RegisterActivity,
+                    "Account Created Successfully",
+                    Toast.LENGTH_SHORT
+                ).show()
+                binding.emailRg.text?.clear()
+                binding.passwordRg.text?.clear()
+                binding.passwordConRg.text?.clear()
+
+            }
+
+
         }
 
+    }
+
+    fun md5(input:String): String {
+        val md = MessageDigest.getInstance("MD5")
+        return BigInteger(1, md.digest(input.toByteArray())).toString(16).padStart(32, '0')
     }
 
     private fun setUpActionBar(){

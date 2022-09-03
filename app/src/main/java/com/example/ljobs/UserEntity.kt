@@ -9,9 +9,9 @@ data class UserEntity (
     @PrimaryKey(autoGenerate = true)
     val id : Int = 0,
     @ColumnInfo(name = "Email")
-    val email : String,
+    val email : String? = null,
     @ColumnInfo(name = "Password")
-    val password : String,
+    val password : String? = null,
 
 
 )

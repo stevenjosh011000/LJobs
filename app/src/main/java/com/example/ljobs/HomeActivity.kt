@@ -6,14 +6,14 @@ import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import com.example.ljobs.databinding.ActivityHomeBinding
 import com.example.ljobs.fragments.HomeFragment
+import com.example.ljobs.fragments.MoreFragment
 import com.example.ljobs.fragments.ProfileFragment
-import com.example.ljobs.fragments.SettingsFragment
 
 class HomeActivity : AppCompatActivity() {
     lateinit var binding : ActivityHomeBinding
 
     private val homeFragment = HomeFragment()
-    private val settingsFragment = SettingsFragment()
+    private val moreFragment = MoreFragment()
     private val profileFragment = ProfileFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,10 +25,14 @@ class HomeActivity : AppCompatActivity() {
             when(it.itemId){
                 R.id.ic_home -> replaceFragment(homeFragment)
                 R.id.ic_profile -> replaceFragment(profileFragment)
-                R.id.ic_setting -> replaceFragment(settingsFragment)
+                R.id.ic_more -> replaceFragment(moreFragment)
             }
             true
         }
+
+
+
+
     }
 
     private fun replaceFragment(fragment: Fragment){
