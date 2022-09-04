@@ -16,4 +16,8 @@
     <string name="please_add_your_educational_information">Please add your educational information</string>
     <string name="work_experience">Work Experience</string>
     <string name="please_add_your_work_experience">Please add your work experience</string>
+    <string name="required">Required</string>
+    <string name="nameRg">Name</string>
+    <string name="phoneRg">Phone Number</string>
+    <string name="more">More</string>
 </resources>

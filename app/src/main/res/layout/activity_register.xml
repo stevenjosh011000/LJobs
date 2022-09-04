@@ -25,17 +25,10 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/register"/>
-
         <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:elevation="20dp"
@@ -45,15 +38,19 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:gravity="center">
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/emailContainerRg"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/emailRg"
                         app:hintTextColor="@color/dark_blue"
                         android:textColorHint="@color/dark_blue"
                         android:theme="@style/bottomLineColor"
+                        app:helperTextTextColor="@color/red"
                         android:padding="@dimen/textInput_padding"
                         >
                         <com.google.android.material.textfield.TextInputEditText
@@ -64,6 +61,7 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/passwordContainerRg"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/passwordRg"
@@ -72,6 +70,7 @@
                         android:textColorHint="@color/dark_blue"
                         android:theme="@style/bottomLineColor"
                         app:endIconMode="password_toggle"
+                        app:helperTextTextColor="@color/red"
                         style="?attr/textInputFilledStyle"
                         >
                         <com.google.android.material.textfield.TextInputEditText
@@ -83,6 +82,7 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/confirmPassContainerRg"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/passwordConfirmRg"
@@ -91,6 +91,7 @@
                         android:textColorHint="@color/dark_blue"
                         app:endIconMode="password_toggle"
                         android:theme="@style/bottomLineColor"
+                        app:helperTextTextColor="@color/red"
                         style="?attr/textInputFilledStyle"
                         >
                         <com.google.android.material.textfield.TextInputEditText
@@ -100,6 +101,60 @@
                             android:inputType="textPassword"
                             />
                     </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/nameContainerRg"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/nameRg"
+                        android:padding="@dimen/textInput_padding"
+                        app:hintTextColor="@color/dark_blue"
+                        android:textColorHint="@color/dark_blue"
+                        android:theme="@style/bottomLineColor"
+                        app:helperTextTextColor="@color/red"
+                        style="?attr/textInputFilledStyle"
+                        >
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/nameRg"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="+60"
+                            android:textColor="@color/black"
+                            android:textSize="18sp"
+                            android:layout_marginLeft="11dp"
+                            android:textStyle="bold"/>
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/phoneContainerRg"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/phoneRg"
+                            android:padding="@dimen/textInput_padding"
+                            app:hintTextColor="@color/dark_blue"
+                            android:textColorHint="@color/dark_blue"
+                            android:theme="@style/bottomLineColor"
+                            app:helperTextTextColor="@color/red"
+                            style="?attr/textInputFilledStyle"
+                            >
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/phoneRg"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number"
+                                />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
 
             </LinearLayout>
 

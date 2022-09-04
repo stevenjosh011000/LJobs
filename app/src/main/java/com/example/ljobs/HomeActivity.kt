@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
+import com.example.ljobs.Session.LoginPref
 import com.example.ljobs.databinding.ActivityHomeBinding
 import com.example.ljobs.fragments.HomeFragment
 import com.example.ljobs.fragments.MoreFragment
@@ -29,10 +30,6 @@ class HomeActivity : AppCompatActivity() {
             }
             true
         }
-
-
-
-
     }
 
     private fun replaceFragment(fragment: Fragment){

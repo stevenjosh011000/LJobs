@@ -34,32 +34,94 @@ class RegisterActivity : AppCompatActivity() {
         val email = binding.emailRg.text.toString()
         val password = binding.passwordRg.text.toString()
         val confirmPassword = binding.passwordConRg.text.toString()
+        val name = binding.nameRg.text.toString()
+        val phoneNo = binding.phoneRg.text.toString()
 
 
         if(email.isEmpty()){
-            Toast.makeText(this@RegisterActivity,"Email cannot be blank", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        if(password.isEmpty()){
-            Toast.makeText(this@RegisterActivity,"Password cannot be blank", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        if(confirmPassword.isEmpty()){
-            Toast.makeText(this@RegisterActivity,"Confirm password cannot be blank", Toast.LENGTH_SHORT).show()
+            binding.emailContainerRg.helperText = "Email is required"
             return
         }
 
         if(!isValidEmail(email)){
-            Toast.makeText(this@RegisterActivity,"It's not a valid email", Toast.LENGTH_SHORT).show()
+            binding.emailContainerRg.helperText = "Invalid email"
+            return
+
+        }else{
+            binding.emailContainerRg.helperText = ""
+        }
+
+        if(password.isEmpty()){
+            binding.passwordContainerRg.helperText = "Password is required"
+            return
+        }
+
+        if(password.length<6){
+            binding.passwordContainerRg.helperText = "Minimum 6 character password"
+            return
+        }
+
+        if(!password.matches(".*[A-Z].*".toRegex())){
+            binding.passwordContainerRg.helperText = "Must contain 1 upper-case character"
+            return
+        }
+
+        if(!password.matches(".*[a-z].*".toRegex())){
+            binding.passwordContainerRg.helperText = "Must contain 1 lower-case character"
+            return
+        }
+
+        if(!password.matches(".*[@#\$%^&+=].*".toRegex())){
+            binding.passwordContainerRg.helperText = "Must contain 1 special character"
+            return
+
+        }else{
+            binding.passwordContainerRg.helperText = ""
+        }
+
+        if(confirmPassword.isEmpty()){
+            binding.confirmPassContainerRg.helperText = "Confirm password is required"
             return
         }
 
         if(password != confirmPassword){
-            Toast.makeText(this@RegisterActivity,"Confirm password does not match the password", Toast.LENGTH_SHORT).show()
+            binding.confirmPassContainerRg.helperText = "Confirm password does not match the password"
+            return
+        }else{
+            binding.confirmPassContainerRg.helperText = ""
+        }
+
+        if(name.isEmpty()){
+            binding.nameContainerRg.helperText = "Name is required"
             return
         }
+
+        if(name.length<2) {
+            binding.nameContainerRg.helperText = "Minimum 3 character"
+            return
+        }else
+        {
+            binding.nameContainerRg.helperText = ""
+        }
+
+        if(phoneNo.isEmpty()){
+            binding.phoneContainerRg.helperText = "Phone number is required"
+            return
+        }
+
+        if(phoneNo.length < 9){
+            binding.phoneContainerRg.helperText = "Phone Number : 9-10 digits"
+            return
+        }
+
+        if(phoneNo.length > 10){
+            binding.phoneContainerRg.helperText = "Phone Number : 9-10 digits"
+            return
+        }
+        else{
+            binding.phoneContainerRg.helperText = ""
+        }
+
 
         lifecycleScope.launch{
 
@@ -71,7 +133,7 @@ class RegisterActivity : AppCompatActivity() {
                 ).show()
             }else {
 
-                userDao.insert(UserEntity(email = email, password = md5(password)))
+                userDao.insert(UserEntity(email = email, password = md5(password), name = name, phoneNum = phoneNo))
                 Toast.makeText(
                     this@RegisterActivity,
                     "Account Created Successfully",
@@ -80,6 +142,8 @@ class RegisterActivity : AppCompatActivity() {
                 binding.emailRg.text?.clear()
                 binding.passwordRg.text?.clear()
                 binding.passwordConRg.text?.clear()
+                binding.nameRg.text?.clear()
+                binding.phoneRg.text?.clear()
 
             }
 

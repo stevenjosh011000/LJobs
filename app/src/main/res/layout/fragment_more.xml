@@ -11,15 +11,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <TextView
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_sign_up_activity"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="More"
-            android:paddingLeft="30dp"
-            android:textSize="30sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:paddingTop="10dp"/>
+            android:layout_height="?attr/actionBarSize">
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="@string/more"
+                android:textColor="@color/dark_blue"
+                android:textSize="25sp"
+                android:layout_marginLeft="30dp"
+                android:textStyle="bold" />
+
+        </androidx.appcompat.widget.Toolbar>
 
         <com.google.android.material.divider.MaterialDivider
             android:layout_width="match_parent"
@@ -38,11 +46,10 @@
                 android:text="Change Password"
                 android:paddingLeft="30dp"
                 android:paddingTop="10dp"
-                android:paddingBottom="10dp"
                 android:textColor="@color/black"
                 android:clickable="true"
                 android:drawableRight="@drawable/ic_baseline_keyboard_arrow_right_24"
-                android:textSize="21sp"/>
+                android:textSize="18sp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -60,7 +67,7 @@
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:textColor="@color/black"
-                android:textSize="21sp"/>
+                android:textSize="18sp"/>
         </LinearLayout>
 
     </LinearLayout>
