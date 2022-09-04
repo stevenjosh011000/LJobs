@@ -20,4 +20,8 @@
     <string name="nameRg">Name</string>
     <string name="phoneRg">Phone Number</string>
     <string name="more">More</string>
+    <string name="update_profile">Update Profile</string>
+    <string name="oldPasswordRg">Old password</string>
+    <string name="newPasswordUp">New password</string>
+    <string name="newPasswordConfirmUp">Confirm New Password</string>
 </resources>
