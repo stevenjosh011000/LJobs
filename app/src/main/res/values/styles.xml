@@ -6,4 +6,9 @@
         <item name="colorControlActivated">@color/dark_blue</item>
         <item name="colorControlHighlight">@color/dark_blue</item>
     </style>
+
+    <style name="Theme_Dialog" parent="ThemeOverlay.AppCompat.Dialog">
+        <item name="android:windowMinWidthMajor">90%</item>
+        <item name="android:windowMinWidthMinor">90%</item>
+    </style>
 </resources>
