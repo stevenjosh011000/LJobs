@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:scrollbars="vertical"
     android:padding="10dp">
     <TextView
         android:layout_width="wrap_content"
@@ -12,23 +17,7 @@
         android:textColor="@android:color/black"
         android:textSize="18sp"
         android:textStyle="bold"/>
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/emailContainerUp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/emailRg"
-        app:hintTextColor="@color/dark_blue"
-        android:textColorHint="@color/dark_blue"
-        android:theme="@style/bottomLineColor"
-        app:helperTextTextColor="@color/red"
-        android:padding="@dimen/textInput_padding"
-        >
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/emailUp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
-    </com.google.android.material.textfield.TextInputLayout>
+
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/nameContainerUp"
@@ -62,6 +51,7 @@
             android:textSize="18sp"
             android:layout_marginLeft="11dp"
             android:textStyle="bold"/>
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/phoneContainerUp"
             android:layout_width="match_parent"
@@ -82,7 +72,81 @@
                 android:inputType="number"
                 />
         </com.google.android.material.textfield.TextInputLayout>
+
     </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/editPassword"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:checked="false"
+        android:text="Change Password ?"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/oldPassContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/oldPasswordRg"
+        android:padding="@dimen/textInput_padding"
+        app:hintTextColor="@color/dark_blue"
+        android:textColorHint="@color/dark_blue"
+        android:visibility="gone"
+        android:theme="@style/bottomLineColor"
+        app:endIconMode="password_toggle"
+        app:helperTextTextColor="@color/red"
+        style="?attr/textInputFilledStyle"
+        >
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/oldPass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/newPasswordContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/newPasswordUp"
+        android:padding="@dimen/textInput_padding"
+        app:hintTextColor="@color/dark_blue"
+        android:textColorHint="@color/dark_blue"
+        android:visibility="gone"
+        android:theme="@style/bottomLineColor"
+        app:endIconMode="password_toggle"
+        app:helperTextTextColor="@color/red"
+        style="?attr/textInputFilledStyle"
+        >
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/newPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/confirmPassContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/newPasswordConfirmUp"
+        android:padding="@dimen/textInput_padding"
+        app:hintTextColor="@color/dark_blue"
+        android:textColorHint="@color/dark_blue"
+        android:visibility="gone"
+        android:theme="@style/bottomLineColor"
+        app:endIconMode="password_toggle"
+        app:helperTextTextColor="@color/red"
+        style="?attr/textInputFilledStyle"
+        >
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/confirmPass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -111,5 +175,8 @@
             android:text="CANCEL"
             android:textColor="@android:color/black"
             android:textStyle="bold"/>
+
     </LinearLayout>
+
 </LinearLayout>
+</ScrollView>

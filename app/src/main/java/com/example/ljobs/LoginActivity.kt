@@ -44,7 +44,7 @@ class LoginActivity : AppCompatActivity() {
             userDao.fetchUserByEmail(email).collect{
                 if (it!=null){
                     if(it.password == md5(binding.passwordLg.text.toString())){
-                        session.createLoginSession(it.email!!)
+                        session.createLoginSession(it.id.toString(),it.email!!,it.password)
                         val intent = Intent(this@LoginActivity,HomeActivity::class.java)
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                         startActivity(intent)
@@ -61,7 +61,7 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-    fun md5(input:String): String {
+    private fun md5(input:String): String {
         val md = MessageDigest.getInstance("MD5")
         return BigInteger(1, md.digest(input.toByteArray())).toString(16).padStart(32, '0')
     }

@@ -23,11 +23,15 @@ class LoginPref {
         val PREF_NAME = "Login_Preference"
         val IS_LOGIN = "isLoggedin"
         val KEY_EMAIL = "email"
+        val KEY_ID = "id"
+        val KEY_PASS = "password"
     }
 
-    fun createLoginSession(email:String){
+    fun createLoginSession(id:String,email:String,password:String){
         editor.putBoolean(IS_LOGIN,true)
+        editor.putString(KEY_ID,id)
         editor.putString(KEY_EMAIL,email)
+        editor.putString(KEY_PASS,password)
         editor.commit()
     }
 
@@ -47,6 +51,8 @@ class LoginPref {
     fun getUserDetails():HashMap<String,String>{
         val user : Map<String,String> = HashMap<String,String>()
         (user as HashMap).put(KEY_EMAIL, pref.getString(KEY_EMAIL,null)!!)
+        (user as HashMap).put(KEY_ID, pref.getString(KEY_ID,null)!!)
+        (user as HashMap).put(KEY_PASS, pref.getString(KEY_PASS,null)!!)
         return user
     }
 
