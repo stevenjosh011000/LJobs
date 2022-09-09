@@ -65,12 +65,23 @@ class ProfileFragment : Fragment() {
             }
         }
 
+        binding.resumeAdd.setOnClickListener {
+            startFileChooser()
+        }
+
         binding.ivEdit.setOnClickListener {
             updateProfileDialog(id,email,pass,userDao,container?.context!!)
         }
 
         // Inflate the layout for this fragment
         return binding.root
+    }
+
+    private fun startFileChooser(){
+        var intent = Intent()
+        intent.setType("application/pdf")
+        intent.setAction(Intent.ACTION_GET_CONTENT)
+        startActivity(Intent.createChooser(intent,"Choose PDF"))
     }
 
     private fun updateProfileDialog(id:Int,email:String,currentPass:String,userDao: UserDao,context: Context){
