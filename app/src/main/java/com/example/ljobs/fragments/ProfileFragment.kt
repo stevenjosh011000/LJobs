@@ -1,30 +1,53 @@
 package com.example.ljobs.fragments
 
 
+import android.Manifest
+import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Typeface
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
+import android.provider.Settings
+import android.util.Base64
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.documentfile.provider.DocumentFile
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.ljobs.*
 import com.example.ljobs.Session.LoginPref
 import com.example.ljobs.databinding.DialogProfileUpdateBinding
 import com.example.ljobs.databinding.FragmentProfileBinding
 import kotlinx.coroutines.launch
+import java.io.File
 import java.math.BigInteger
 import java.security.MessageDigest
+
 
 class ProfileFragment : Fragment() {
 
     lateinit var session : LoginPref
+    lateinit var permissionLauncher : ActivityResultLauncher<Array<String>>
+    var isReadPermissionGranted = false
+    var isWritePermissionGranted = false
+    var isManagePermissionGranted = false
+    var permissionGranted = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +71,7 @@ class ProfileFragment : Fragment() {
         val pass: String = user.get(LoginPref.KEY_PASS).toString()
         val id: Int = user.get(LoginPref.KEY_ID)?.toInt()!!
 
+
         binding.tvProfilePic.setOnClickListener {
            binding.tvProfileName.text = user.get(LoginPref.KEY_EMAIL)
         }
@@ -64,9 +88,22 @@ class ProfileFragment : Fragment() {
                 }
             }
         }
+        permissionLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){
+            permissions ->
+
+            isReadPermissionGranted = permissions[Manifest.permission.READ_EXTERNAL_STORAGE] ?: isReadPermissionGranted
+            isWritePermissionGranted = permissions[Manifest.permission.WRITE_EXTERNAL_STORAGE] ?: isWritePermissionGranted
+            isManagePermissionGranted = permissions[Manifest.permission.MANAGE_EXTERNAL_STORAGE] ?: isManagePermissionGranted
+        }
 
         binding.resumeAdd.setOnClickListener {
-            startFileChooser()
+
+            if(isReadPermissionGranted && isWritePermissionGranted && isManagePermissionGranted){
+                startFileChooser()
+            }else{
+                requestPermission(container?.context!!)
+            }
+
         }
 
         binding.ivEdit.setOnClickListener {
@@ -77,12 +114,80 @@ class ProfileFragment : Fragment() {
         return binding.root
     }
 
-    private fun startFileChooser(){
-        var intent = Intent()
-        intent.setType("application/pdf")
-        intent.setAction(Intent.ACTION_GET_CONTENT)
-        startActivity(Intent.createChooser(intent,"Choose PDF"))
+    private fun requestPermission(context: Context){
+
+        isReadPermissionGranted = ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.READ_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
+
+        isWritePermissionGranted = ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
+            if (!Environment.isExternalStorageManager()) {
+                val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+                val uri = Uri.fromParts("package", context.packageName, null)
+                intent.data = uri
+                startActivity(intent)
+            }else{
+                isManagePermissionGranted = true
+            }
+        }
+
+        val permissionRequest : MutableList<String> = ArrayList()
+        if(!isManagePermissionGranted){
+            permissionRequest.add(Manifest.permission.MANAGE_EXTERNAL_STORAGE)
+        }
+        if(!isWritePermissionGranted){
+            permissionRequest.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }
+        if(!isReadPermissionGranted){
+            permissionRequest.add(Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
+
+
+        if(permissionRequest.isNotEmpty()){
+            permissionLauncher.launch(permissionRequest.toTypedArray())
+        }
     }
+
+    private fun startFileChooser(){
+        var intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.setType("application/pdf")
+        startForResult.launch(Intent.createChooser(intent,"Choose PDF"))
+    }
+
+
+    private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            result: ActivityResult ->
+        if (result.resultCode == Activity.RESULT_OK) {
+
+                val data = result!!.data
+                val binding = FragmentProfileBinding.inflate(layoutInflater)
+                val sUri: Uri = data?.data!!
+                val path = Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_DOWNLOADS
+                )
+                val name = DocumentFile.fromSingleUri(context?.applicationContext!!,Uri.parse(sUri.toString()))?.name
+
+
+                val imageBytes = Base64.decode(convertToBase64(File(path,name)), Base64.DEFAULT)
+//                val decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+
+            val intent = Intent(context?.applicationContext,ViewPdfActivity::class.java)
+            intent.putExtra("pdf",convertToBase64(File(path,name)))
+            startActivity(intent)
+
+        }
+    }
+
+    fun convertToBase64(attachment: File): String {
+        return Base64.encodeToString(attachment.readBytes(), Base64.NO_WRAP)
+    }
+
 
     private fun updateProfileDialog(id:Int,email:String,currentPass:String,userDao: UserDao,context: Context){
 

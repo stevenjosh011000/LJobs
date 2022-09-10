@@ -1,14 +1,23 @@
 package com.example.ljobs
 
+import android.app.Activity
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.text.TextUtils
+import android.util.Base64
+import android.util.Log
 import android.util.Patterns
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.example.ljobs.databinding.ActivityRegisterBinding
+import com.example.ljobs.databinding.FragmentProfileBinding
 import kotlinx.coroutines.launch
+import java.io.File
 import java.math.BigInteger
 import java.security.MessageDigest
 
