@@ -44,7 +44,7 @@ class LoginActivity : AppCompatActivity() {
             userDao.fetchUserByEmail(email).collect{
                 if (it!=null){
                     if(it.password == md5(binding.passwordLg.text.toString())){
-                        session.createLoginSession(it.id.toString(),it.email!!,it.password)
+                        session.createLoginSession(it.id.toString(),it.email!!,it.password,it.resume!!,it.resumeName!!)
                         val intent = Intent(this@LoginActivity,HomeActivity::class.java)
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                         startActivity(intent)

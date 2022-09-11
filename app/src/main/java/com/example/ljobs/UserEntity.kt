@@ -19,6 +19,8 @@ data class UserEntity (
     val phoneNum : String? = null,
     @ColumnInfo(name = "Resume")
     val resume : String? = null,
+    @ColumnInfo(name = "ResumeName")
+    val resumeName : String? = null,
     @ColumnInfo(name = "Role")
     val role : String? = "1",
 

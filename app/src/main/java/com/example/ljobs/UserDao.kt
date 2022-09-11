@@ -26,4 +26,8 @@ interface UserDao {
 
     @Query("SELECT EXISTS(SELECT * FROM `user-table` WHERE email = :email)")
     fun isEmailExist(email: String ) : Boolean
+
+    @Query("UPDATE `user-table` SET resume = :resume,resumeName = :resumeName WHERE id =:id")
+    fun update(resume: String?,resumeName:String?, id: Int)
+
 }

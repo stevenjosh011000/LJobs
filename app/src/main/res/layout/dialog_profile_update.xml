@@ -162,7 +162,7 @@
             android:gravity="center"
             android:padding="10dp"
             android:text="UPDATE"
-            android:textColor="@android:color/holo_red_dark"
+            android:textColor="@android:color/holo_green_dark"
             android:textStyle="bold"/>
         <TextView
             android:id="@+id/tvCancel"
@@ -173,7 +173,7 @@
             android:inputType="textEmailAddress"
             android:padding="10dp"
             android:text="CANCEL"
-            android:textColor="@android:color/black"
+            android:textColor="@color/red"
             android:textStyle="bold"/>
 
     </LinearLayout>

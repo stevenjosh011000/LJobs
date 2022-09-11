@@ -21,12 +21,14 @@
 
     <ImageView
         android:id="@+id/chooseResumePdf"
+        android:layout_marginTop="20dp"
         android:layout_width="55dp"
         android:layout_height="55dp"
         android:layout_gravity="center"
         android:src="@drawable/ic_baseline_file_upload_24"/>
 
     <TextView
+        android:id="@+id/chooseResumeTv"
         android:layout_marginTop="15dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -36,27 +38,37 @@
         android:textSize="18sp"
         android:layout_marginLeft="11dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Maximum file size 6mb"
-        android:textColor="@color/black"
-        android:layout_gravity="center"
-        android:textSize="18sp"
-        android:layout_marginLeft="11dp" />
+        android:layout_marginTop="20dp"
+        android:gravity="end"
+        android:orientation="horizontal">
 
     <TextView
-        android:layout_marginTop="40dp"
         android:id="@+id/tvUpdate"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:foreground="?attr/selectableItemBackground"
-        android:gravity="center"
-        android:layout_gravity="center"
         android:padding="10dp"
         android:text="UPDATE"
+        android:visibility="gone"
         android:textColor="@android:color/holo_green_dark"
         android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/tvCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:foreground="?attr/selectableItemBackground"
+        android:gravity="center"
+        android:inputType="textEmailAddress"
+        android:padding="10dp"
+        android:text="CANCEL"
+        android:textColor="@color/red"
+        android:textStyle="bold"/>
+
+    </LinearLayout>
 
 
 
