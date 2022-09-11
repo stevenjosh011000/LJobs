@@ -34,8 +34,6 @@ class LoginPref {
         editor.putString(KEY_ID,id)
         editor.putString(KEY_EMAIL,email)
         editor.putString(KEY_PASS,password)
-        editor.putString(RESUME,"")
-        editor.putString(RESUME_NAME,"")
         editor.putString(RESUME,resume)
         editor.putString(RESUME_NAME,resumeName)
         editor.commit()

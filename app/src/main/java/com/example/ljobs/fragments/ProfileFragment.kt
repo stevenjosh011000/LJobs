@@ -57,6 +57,7 @@ class ProfileFragment : Fragment() {
     var isReadPermissionGranted = false
     var isWritePermissionGranted = false
     var isManagePermissionGranted = false
+    var resumeUpdated = false
     //endregion
 
 
@@ -113,7 +114,9 @@ class ProfileFragment : Fragment() {
         if(!resume.isEmpty() && !resumeName.isEmpty()){
             binding.resume.visibility = View.VISIBLE
             binding.resumeTv.visibility = View.GONE
-            binding.resumeNameTv.text = resumeName
+            if(resumeName.length > 15) {
+                binding.resumeNameTv.text = resumeName.substring(0, 15) + "..."
+            }
             binding.resumeNameTv.visibility = View.VISIBLE
         }
 
@@ -131,11 +134,22 @@ class ProfileFragment : Fragment() {
                 requestPermission(container?.context!!)
             }
             lifecycleScope.launch{
-                userDao.fetchUserById(id!!).collect{
-                    if(it !=null){
-                        binding.resumeNameTv.setText(it.resumeName.toString())
+
+                userDao.fetchUserById(id!!).collect {
+                    if (it != null) {
+                        if(it.resumeStatus.toString() == "1") {
+                            binding.resumeNameTv.setText(it.resumeName.toString())
+                            binding.resume.visibility = View.VISIBLE
+                            binding.resumeTv.visibility = View.GONE
+                            if(resumeName.length > 15) {
+                                binding.resumeNameTv.text = resumeName.substring(0, 15) + "..."
+                            }
+                            binding.resumeNameTv.visibility = View.VISIBLE
+
+                        }
                     }
                 }
+
             }
         }
         //endregion
@@ -162,23 +176,28 @@ class ProfileFragment : Fragment() {
         if (result.resultCode == Activity.RESULT_OK) {
 
                 val data = result!!.data
-                val binding = FragmentProfileBinding.inflate(layoutInflater)
                 val sUri: Uri = data?.data!!
                 val path = Environment.getExternalStoragePublicDirectory(
                     Environment.DIRECTORY_DOWNLOADS
                 )
-                fileName = DocumentFile.fromSingleUri(context?.applicationContext!!,Uri.parse(sUri.toString()))?.name.toString()
 
-                imageBytes = convertToBase64(File(path,fileName))
 //                imageBytes = Base64.decode(convertToBase64(File(path,name)), Base64.DEFAULT)
 //              val decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
 
-            lifecycleScope.launch{
-                userDao?.update(resume = imageBytes.toString(), resumeName = fileName.toString() ,id = id!!)
-                session.updateResumeSession(resume = imageBytes.toString(), resumeName = fileName.toString())
-                resume = imageBytes.toString()
-                resumeName = fileName.toString()
-                Toast.makeText(activity?.applicationContext,"Resume Updated.", Toast.LENGTH_SHORT).show()
+            if(data.toString().contains("downloads")){
+            fileName = DocumentFile.fromSingleUri(context?.applicationContext!!,Uri.parse(sUri.toString()))?.name.toString()
+            imageBytes = convertToBase64(File(path,fileName))
+                lifecycleScope.launch{
+                    userDao?.update(resume = imageBytes.toString(), resumeName = fileName.toString(), resumeStatus = "1" ,id = id!!)
+                    session.updateResumeSession(resume = imageBytes.toString(), resumeName = fileName.toString())
+                    resume = imageBytes.toString()
+                    resumeName = fileName.toString()
+                    resumeUpdated = true
+                    Toast.makeText(activity?.applicationContext,"Resume Updated.", Toast.LENGTH_SHORT).show()
+                }
+
+            }else{
+                Toast.makeText(activity?.applicationContext,"Please select PDF from downloads folder", Toast.LENGTH_SHORT).show()
             }
 
         }
