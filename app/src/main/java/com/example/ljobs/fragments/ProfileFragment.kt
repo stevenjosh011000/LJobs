@@ -122,7 +122,6 @@ class ProfileFragment : Fragment() {
 
         binding.resume.setOnClickListener {
             val intent = Intent(context?.applicationContext,ViewPdfActivity::class.java)
-            intent.putExtra("pdf",resume)
             startActivity(intent)
         }
 
