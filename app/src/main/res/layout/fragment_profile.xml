@@ -264,7 +264,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/work_experience"
+                            android:text="Languages"
                             android:textStyle="bold"
                             android:textSize="18sp"
                             android:textAppearance="?attr/textAppearanceHeadline6"
@@ -292,7 +292,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/please_add_your_work_experience"
+                            android:text="Please add the languages you know."
                             android:textColor="@color/dark_gray"
                             android:textSize="15sp"
                             android:textAppearance="?attr/textAppearanceHeadline6"

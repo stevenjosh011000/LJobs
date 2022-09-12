@@ -34,8 +34,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.ljobs.*
 import com.example.ljobs.Session.LoginPref
+import com.example.ljobs.databinding.DialogEducationInfoBinding
 import com.example.ljobs.databinding.DialogProfileUpdateBinding
-import com.example.ljobs.databinding.DialogResumeUploadBinding
 import com.example.ljobs.databinding.FragmentProfileBinding
 import kotlinx.coroutines.*
 import java.io.File
@@ -164,11 +164,6 @@ class ProfileFragment : Fragment() {
     }
 
     //region Choose PDF
-    private fun startFileChooser(){
-        var intent = Intent(Intent.ACTION_GET_CONTENT)
-        intent.setType("application/pdf")
-        startForResult.launch(Intent.createChooser(intent,"Choose PDF"))
-    }
 
     private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             result: ActivityResult ->
@@ -201,12 +196,18 @@ class ProfileFragment : Fragment() {
 
         }
     }
+
+    private fun startFileChooser(){
+        var intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.setType("application/pdf")
+        startForResult.launch(Intent.createChooser(intent,"Choose PDF"))
+    }
     //endregion
 
     private fun updateResumeDialog(id:Int,userDao: UserDao,context: Context){
         val updateDialog= Dialog(context, R.style.Theme_Dialog)
         updateDialog.setCancelable(false)
-        val binding = DialogResumeUploadBinding.inflate(layoutInflater)
+        val binding = DialogEducationInfoBinding.inflate(layoutInflater)
         updateDialog.setContentView(binding.root)
 
         binding.chooseResumePdf.setOnClickListener {
