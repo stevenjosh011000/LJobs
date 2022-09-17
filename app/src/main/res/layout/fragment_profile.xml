@@ -228,7 +228,13 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvEduList"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            tools:visibility="gone"/>
                         <TextView
+                            android:id="@+id/eduInfo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/dark_gray"
@@ -276,7 +282,7 @@
                             android:layout_weight="1" />
 
                         <ImageView
-                            android:id="@+id/workExpAdd"
+                            android:id="@+id/languagesAdd"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
                             android:layout_gravity="right"
@@ -290,9 +296,10 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/languages"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Please add the languages you know."
+                            android:text="Please add all the languages you know."
                             android:textColor="@color/dark_gray"
                             android:textSize="15sp"
                             android:textAppearance="?attr/textAppearanceHeadline6"

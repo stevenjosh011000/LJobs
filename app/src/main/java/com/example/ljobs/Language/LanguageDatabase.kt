@@ -1,21 +1,20 @@
-package com.example.ljobs
+package com.example.ljobs.Edu
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-
-@Database(entities = [UserEntity::class], version = 8)
-abstract class UserDatabase : RoomDatabase() {
-    abstract fun userDao():UserDao
+@Database(entities = [LanguageEntity::class], version = 1)
+abstract class LanguageDatabase : RoomDatabase(){
+    abstract fun languageDao(): LanguageDao
 
     companion object{
 
         @Volatile
-        private var INSTANCE : UserDatabase? = null
+        private var INSTANCE : LanguageDatabase? = null
 
-        fun getDatabase(context: Context):UserDatabase{
+        fun getDatabase(context: Context): LanguageDatabase {
             val tempInstance = INSTANCE
             if(tempInstance != null){
                 return tempInstance
@@ -23,8 +22,8 @@ abstract class UserDatabase : RoomDatabase() {
             synchronized(this){
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    UserDatabase::class.java,
-                    "users-database"
+                    LanguageDatabase::class.java,
+                    "language-database"
                 ).allowMainThreadQueries()
                     .fallbackToDestructiveMigration()
                     .build()

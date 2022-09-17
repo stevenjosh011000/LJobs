@@ -34,11 +34,13 @@
         <entry key="..\:/Users/arecu/AndroidStudioProjects/LJobs/app/src/main/res/layout/activity_splash.xml" value="0.2" />
         <entry key="..\:/Users/arecu/AndroidStudioProjects/LJobs/app/src/main/res/layout/activity_view_pdf.xml" value="0.22239583333333332" />
         <entry key="..\:/Users/arecu/AndroidStudioProjects/LJobs/app/src/main/res/layout/dialog_education_info.xml" value="0.19322916666666667" />
+        <entry key="..\:/Users/arecu/AndroidStudioProjects/LJobs/app/src/main/res/layout/dialog_language.xml" value="0.33" />
         <entry key="..\:/Users/arecu/AndroidStudioProjects/LJobs/app/src/main/res/layout/dialog_profile_update.xml" value="0.2" />
         <entry key="..\:/Users/arecu/AndroidStudioProjects/LJobs/app/src/main/res/layout/dialog_resume_upload.xml" value="0.2" />
+        <entry key="..\:/Users/arecu/AndroidStudioProjects/LJobs/app/src/main/res/layout/edu_item_row.xml" value="0.24166666666666667" />
         <entry key="..\:/Users/arecu/AndroidStudioProjects/LJobs/app/src/main/res/layout/fragment_home.xml" value="0.11626139817629179" />
         <entry key="..\:/Users/arecu/AndroidStudioProjects/LJobs/app/src/main/res/layout/fragment_more.xml" value="0.14385964912280702" />
-        <entry key="..\:/Users/arecu/AndroidStudioProjects/LJobs/app/src/main/res/layout/fragment_profile.xml" value="0.2" />
+        <entry key="..\:/Users/arecu/AndroidStudioProjects/LJobs/app/src/main/res/layout/fragment_profile.xml" value="0.1" />
         <entry key="..\:/Users/arecu/AndroidStudioProjects/LJobs/app/src/main/res/layout/fragment_settings.xml" value="0.10764944275582573" />
         <entry key="..\:/Users/arecu/AndroidStudioProjects/LJobs/app/src/main/res/menu/menu.xml" value="0.2" />
       </map>

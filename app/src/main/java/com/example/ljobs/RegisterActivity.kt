@@ -1,23 +1,20 @@
 package com.example.ljobs
 
-import android.app.Activity
-import android.net.Uri
+import android.content.Context
 import android.os.Bundle
-import android.os.Environment
 import android.text.TextUtils
-import android.util.Base64
-import android.util.Log
 import android.util.Patterns
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
+import com.example.ljobs.Edu.LanguageDao
+import com.example.ljobs.Edu.LanguageEntity
+import com.example.ljobs.User.UserDao
+import com.example.ljobs.User.UserEntity
 import com.example.ljobs.databinding.ActivityRegisterBinding
-import com.example.ljobs.databinding.FragmentProfileBinding
 import kotlinx.coroutines.launch
-import java.io.File
 import java.math.BigInteger
 import java.security.MessageDigest
 
@@ -32,13 +29,14 @@ class RegisterActivity : AppCompatActivity() {
 
         setUpActionBar()
         val userDao = (application as UserApp).db.userDao()
+        val languageDao = (application as UserApp).dbLanguage.languageDao()
 
         binding.btnSignUp.setOnClickListener {
-            addUser(userDao)
+            addUser(userDao,languageDao)
         }
     }
 
-    private fun addUser(userDao: UserDao){
+    private fun addUser(userDao: UserDao,languageDao:LanguageDao){
 
         val email = binding.emailRg.text.toString()
         val password = binding.passwordRg.text.toString()
@@ -143,6 +141,7 @@ class RegisterActivity : AppCompatActivity() {
             }else {
 
                 userDao.insert(UserEntity(email = email, password = md5(password), name = name, phoneNum = phoneNo))
+                languageDao.insert(LanguageEntity(email = email))
                 Toast.makeText(
                     this@RegisterActivity,
                     "Account Created Successfully",
@@ -153,6 +152,7 @@ class RegisterActivity : AppCompatActivity() {
                 binding.passwordConRg.text?.clear()
                 binding.nameRg.text?.clear()
                 binding.phoneRg.text?.clear()
+
 
             }
 

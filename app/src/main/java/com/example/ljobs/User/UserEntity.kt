@@ -1,4 +1,4 @@
-package com.example.ljobs
+package com.example.ljobs.User
 
 
 import androidx.room.ColumnInfo

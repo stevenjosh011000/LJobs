@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.example.ljobs.Session.LoginPref
+import com.example.ljobs.User.UserDao
 import com.example.ljobs.databinding.ActivityLoginBinding
 import kotlinx.coroutines.launch
 import java.math.BigInteger
