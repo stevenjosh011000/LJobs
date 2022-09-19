@@ -93,9 +93,9 @@ class ProfileFragment : Fragment() {
         email = user.get(LoginPref.KEY_EMAIL).toString()
         resume = user.get(LoginPref.RESUME).toString()
         resumeName = user.get(LoginPref.RESUME_NAME).toString()
-        eduDao = (activity?.applicationContext as UserApp).dbEdu.eduDao()
+        eduDao = (activity?.applicationContext as UserApp).db.eduDao()
         userDao = (activity?.applicationContext as UserApp).db.userDao()
-        languageDao = (activity?.applicationContext as UserApp).dbLanguage.languageDao()
+        languageDao = (activity?.applicationContext as UserApp).db.languageDao()
         id = user.get(LoginPref.KEY_ID)?.toInt()!!
         binding.tvProfileName.typeface = typeFace
         //endregion

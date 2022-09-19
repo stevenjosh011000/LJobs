@@ -4,11 +4,17 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.ljobs.Edu.EduDao
+import com.example.ljobs.Edu.EduEntity
+import com.example.ljobs.Edu.LanguageDao
+import com.example.ljobs.Edu.LanguageEntity
 
 
-@Database(entities = [UserEntity::class], version = 8)
+@Database(entities = [UserEntity::class,EduEntity::class,LanguageEntity::class], version = 9)
 abstract class UserDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
+    abstract fun eduDao(): EduDao
+    abstract fun languageDao(): LanguageDao
 
     companion object{
 

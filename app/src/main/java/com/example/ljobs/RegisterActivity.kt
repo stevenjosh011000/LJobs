@@ -29,7 +29,7 @@ class RegisterActivity : AppCompatActivity() {
 
         setUpActionBar()
         val userDao = (application as UserApp).db.userDao()
-        val languageDao = (application as UserApp).dbLanguage.languageDao()
+        val languageDao = (application as UserApp).db.languageDao()
 
         binding.btnSignUp.setOnClickListener {
             addUser(userDao,languageDao)
