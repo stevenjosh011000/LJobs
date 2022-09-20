@@ -21,6 +21,15 @@
         android:theme="@style/Theme.LJobs"
         tools:targetApi="31">
         <activity
+            android:name=".JobUpdateActivity"
+            android:exported="false" />
+        <activity
+            android:name=".JobCreateActivity"
+            android:exported="false" />
+        <activity
+            android:name=".JobActivity"
+            android:exported="false" />
+        <activity
             android:name=".ViewPdfActivity"
             android:exported="false" />
         <activity
