@@ -3,22 +3,6 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/TARUC/AndroidStudioProjects/LJobs/app/src/main/res/layout/activity_home.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/TARUC/AndroidStudioProjects/LJobs/app/src/main/res/layout/activity_intro.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/TARUC/AndroidStudioProjects/LJobs/app/src/main/res/layout/activity_job_create.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/TARUC/AndroidStudioProjects/LJobs/app/src/main/res/layout/activity_job_create2.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/TARUC/AndroidStudioProjects/LJobs/app/src/main/res/layout/activity_job_form.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/TARUC/AndroidStudioProjects/LJobs/app/src/main/res/layout/activity_job_update.xml" value="0.17721518987341772" />
-        <entry key="..\:/Users/TARUC/AndroidStudioProjects/LJobs/app/src/main/res/layout/activity_job_update2.xml" value="0.35260416666666666" />
-        <entry key="..\:/Users/TARUC/AndroidStudioProjects/LJobs/app/src/main/res/layout/activity_login.xml" value="0.32971014492753625" />
-        <entry key="..\:/Users/TARUC/AndroidStudioProjects/LJobs/app/src/main/res/layout/activity_register.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/TARUC/AndroidStudioProjects/LJobs/app/src/main/res/layout/activity_splash.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/TARUC/AndroidStudioProjects/LJobs/app/src/main/res/layout/activity_view_pdf.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/TARUC/AndroidStudioProjects/LJobs/app/src/main/res/layout/dialog_education_info.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/TARUC/AndroidStudioProjects/LJobs/app/src/main/res/layout/dialog_language.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/TARUC/AndroidStudioProjects/LJobs/app/src/main/res/layout/dialog_profile_update.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/TARUC/AndroidStudioProjects/LJobs/app/src/main/res/layout/edu_item_row.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/TARUC/AndroidStudioProjects/LJobs/app/src/main/res/layout/fragment_profile.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/arecu/AndroidStudioProjects/LJobs/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2195" />
         <entry key="..\:/Users/arecu/AndroidStudioProjects/LJobs/app/src/main/res/drawable/arrow_back_24.xml" value="0.189" />
         <entry key="..\:/Users/arecu/AndroidStudioProjects/LJobs/app/src/main/res/drawable/bottom_nav.xml" value="0.1" />

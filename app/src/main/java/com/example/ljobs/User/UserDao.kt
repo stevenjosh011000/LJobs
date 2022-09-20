@@ -1,6 +1,7 @@
 package com.example.ljobs.User
 
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 
@@ -16,6 +17,9 @@ interface UserDao {
     fun delete(userEntity: UserEntity)
 
     @Query("SELECT * FROM `user-table`")
+    fun readAllData(): LiveData<List<UserEntity>>
+
+    @Query("SELECT * FROM `user-table`")
     fun fetchAllUsers(): Flow<List<UserEntity>>
 
     @Query("SELECT * FROM `user-table` where id=:id")
@@ -29,5 +33,4 @@ interface UserDao {
 
     @Query("UPDATE `user-table` SET resume = :resume,resumeName = :resumeName,resumeStatus = :resumeStatus WHERE id =:id")
     fun update(resume: String?,resumeName:String?,resumeStatus:String?, id: Int)
-
 }
