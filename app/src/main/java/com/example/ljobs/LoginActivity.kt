@@ -2,12 +2,15 @@ package com.example.ljobs
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.ljobs.Session.LoginPref
 import com.example.ljobs.User.UserDao
+import com.example.ljobs.User.UserViewModel
 import com.example.ljobs.databinding.ActivityLoginBinding
 import kotlinx.coroutines.launch
 import java.math.BigInteger
@@ -18,18 +21,17 @@ class LoginActivity : AppCompatActivity() {
 
     lateinit var binding : ActivityLoginBinding
     lateinit var session : LoginPref
+    private lateinit var mUserViewModel : UserViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this , R.layout.activity_login)
-
+        mUserViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
         setUpActionBar()
 
-        val userDao = (application as UserApp).db.userDao()
-
         binding.btnLogin.setOnClickListener {
-            login(binding.emailLg.text.toString(),userDao)
+            login(binding.emailLg.text.toString())
         }
 
         session = LoginPref(this)
@@ -39,13 +41,14 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-    private fun login(email:String,userDao: UserDao){
+    private fun login(email:String){
 
-        lifecycleScope.launch{
-            userDao.fetchUserByEmail(email).collect{
-                if (it!=null){
-                    if(it.password == md5(binding.passwordLg.text.toString())){
-                        session.createLoginSession(it.id.toString(),it.email!!,it.password,it.resume.toString(),it.resumeName.toString())
+        val account = mUserViewModel.fetchByEmail(email)
+//        lifecycleScope.launch{
+//            userDao.fetchUserByEmail(email).collect{
+                if (account != null){
+                    if(account.password == md5(binding.passwordLg.text.toString())){
+                        session.createLoginSession(account.id.toString(),account.email!!,account.password!!,account.resume.toString(),account.resumeName.toString())
                         val intent = Intent(this@LoginActivity,HomeActivity::class.java)
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                         startActivity(intent)
@@ -63,8 +66,8 @@ class LoginActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-            }
-        }
+//            }
+//        }
 
     }
 

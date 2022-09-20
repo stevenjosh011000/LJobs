@@ -29,6 +29,8 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ljobs.Edu.EduDao
@@ -40,6 +42,7 @@ import com.example.ljobs.R
 import com.example.ljobs.Session.LoginPref
 import com.example.ljobs.User.UserDao
 import com.example.ljobs.User.UserEntity
+import com.example.ljobs.User.UserViewModel
 import com.example.ljobs.UserApp
 import com.example.ljobs.ViewPdfActivity
 import com.example.ljobs.databinding.DialogEducationInfoBinding
@@ -63,6 +66,7 @@ class ProfileFragment : Fragment() {
     lateinit var resume: String
     lateinit var resumeName: String
     lateinit var binding : FragmentProfileBinding
+    private lateinit var mUserViewModel : UserViewModel
     var id: Int? = null
     var email: String? = null
     var imageBytes : String? = null
@@ -96,22 +100,27 @@ class ProfileFragment : Fragment() {
         eduDao = (activity?.applicationContext as UserApp).db.eduDao()
         userDao = (activity?.applicationContext as UserApp).db.userDao()
         languageDao = (activity?.applicationContext as UserApp).db.languageDao()
+
+        mUserViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
+//        mUserViewModel.readAllData.observe(viewLifecycleOwner, Observer { user ->
+//
+//        })
+
         id = user.get(LoginPref.KEY_ID)?.toInt()!!
         binding.tvProfileName.typeface = typeFace
         //endregion
 
         //region Get Personal Data
-        lifecycleScope.launch{
-            userDao?.fetchUserByEmail(user.get(LoginPref.KEY_EMAIL).toString())?.collect{
-                if(it!=null){
-                    var name : String = it.name?.subSequence(0,2).toString()
-                    binding.tvProfilePic.text = name.uppercase()
-                    binding.tvProfileName.text = it.name
-                    binding.tvProfileEmail.text = it.email
-                    binding.tvProfilePhone.text = "+60"+it.phoneNum
-                }
-            }
+        val account = mUserViewModel.fetchByEmail(email!!)
+
+        if(account!=null) {
+            var name: String = account.name?.subSequence(0, 2).toString()
+            binding.tvProfilePic.text = name.uppercase()
+            binding.tvProfileName.text = account.name
+            binding.tvProfileEmail.text = account.email
+            binding.tvProfilePhone.text = "+60" + account.phoneNum
         }
+
         lifecycleScope.launch{
             eduDao.fetchAllEduByEmail(email!!).collect(){
                 var list = ArrayList(it)
@@ -201,24 +210,22 @@ class ProfileFragment : Fragment() {
             }else{
                 requestPermission(container?.context!!)
             }
-            lifecycleScope.launch{
 
-                userDao.fetchUserById(id!!).collect {
-                    if (it != null) {
-                        if(it.resumeStatus.toString() == "1") {
-                            binding.resumeNameTv.setText(it.resumeName.toString())
-                            binding.resume.visibility = View.VISIBLE
-                            binding.resumeTv.visibility = View.GONE
-                            if(resumeName.length > 15) {
-                                binding.resumeNameTv.text = resumeName.substring(0, 15) + "..."
-                            }
-                            binding.resumeNameTv.visibility = View.VISIBLE
-
-                        }
+            if (account!=null) {
+                if(account.resumeStatus.toString() == "1") {
+                    binding.resumeNameTv.setText(account.resumeName.toString())
+                    binding.resume.visibility = View.VISIBLE
+                    binding.resumeTv.visibility = View.GONE
+                    if(resumeName.length > 15) {
+                        binding.resumeNameTv.text = resumeName.substring(0, 15) + "..."
                     }
-                }
+                    binding.resumeNameTv.visibility = View.VISIBLE
 
+                }
             }
+
+
+
         }
         //endregion
 
@@ -370,7 +377,7 @@ class ProfileFragment : Fragment() {
 
         //region Update Profile
         binding.ivEdit.setOnClickListener {
-            updateProfileDialog(id!!,email!!,pass,userDao!!,container?.context!!)
+            updateProfileDialog(id!!,email!!,pass,container?.context!!)
         }
         //endregion
 
@@ -395,14 +402,28 @@ class ProfileFragment : Fragment() {
             if(data.toString().contains("downloads")){
             fileName = DocumentFile.fromSingleUri(context?.applicationContext!!,Uri.parse(sUri.toString()))?.name.toString()
             imageBytes = convertToBase64(File(path,fileName))
-                lifecycleScope.launch{
-                    userDao?.update(resume = imageBytes.toString(), resumeName = fileName.toString(), resumeStatus = "1" ,id = id!!)
-                    session.updateResumeSession(resume = imageBytes.toString(), resumeName = fileName.toString())
-                    resume = imageBytes.toString()
-                    resumeName = fileName.toString()
-                    resumeUpdated = true
-                    Toast.makeText(activity?.applicationContext,"Resume Updated.", Toast.LENGTH_SHORT).show()
+
+            mUserViewModel.updateUser(resume = imageBytes.toString(), resumeName = fileName.toString(), resumeStatus = "1" ,email = email!!)
+            session.updateResumeSession(resume = imageBytes.toString(), resumeName = fileName.toString())
+            resume = imageBytes.toString()
+            resumeName = fileName.toString()
+            resumeUpdated = true
+
+            val account = mUserViewModel.fetchByEmail(email!!)
+            if (account!=null) {
+                if(account.resumeStatus.toString() == "1") {
+                    binding.resumeNameTv.setText(account.resumeName.toString())
+                    binding.resume.visibility = View.VISIBLE
+                    binding.resumeTv.visibility = View.GONE
+                    if(resumeName.length > 15) {
+                        binding.resumeNameTv.text = resumeName.substring(0, 15) + "..."
+                    }
+                    binding.resumeNameTv.visibility = View.VISIBLE
+
                 }
+            }
+            Toast.makeText(activity?.applicationContext,"Resume Updated.", Toast.LENGTH_SHORT).show()
+
 
             }else{
                 Toast.makeText(activity?.applicationContext,"Please select PDF from downloads folder", Toast.LENGTH_SHORT).show()
@@ -421,76 +442,91 @@ class ProfileFragment : Fragment() {
     //endregion
 
     //region Dialog for updating profile
-    private fun updateProfileDialog(id:Int, email:String, currentPass:String, userDao: UserDao, context: Context){
+    private fun updateProfileDialog(id:Int, email:String, currentPass:String, context: Context){
 
         val updateDialog= Dialog(context, R.style.Theme_Dialog)
         updateDialog.setCancelable(false)
 
-        val binding = DialogProfileUpdateBinding.inflate(layoutInflater)
-        updateDialog.setContentView(binding.root)
 
-        lifecycleScope.launch{
-            userDao.fetchUserByEmail(email).collect{
-                if(it !=null){
-                    binding.nameUp.setText(it.name.toString())
-                    binding.phoneUp.setText(it.phoneNum.toString())
-                }
-            }
+        val bindingProfile = DialogProfileUpdateBinding.inflate(layoutInflater)
+        updateDialog.setContentView(bindingProfile.root)
+
+        val account = mUserViewModel.fetchByEmail(email!!)
+
+        if(account !=null){
+            bindingProfile.nameUp.setText(account.name.toString())
+            bindingProfile.phoneUp.setText(account.phoneNum.toString())
         }
-        binding.editPassword.setOnClickListener {
-            if(binding.editPassword.isChecked){
-                binding.oldPassContainer.visibility = View.VISIBLE
-                binding.newPasswordContainer.visibility = View.VISIBLE
-                binding.confirmPassContainer.visibility = View.VISIBLE
+
+        bindingProfile.editPassword.setOnClickListener {
+            if(bindingProfile.editPassword.isChecked){
+                bindingProfile.oldPassContainer.visibility = View.VISIBLE
+                bindingProfile.newPasswordContainer.visibility = View.VISIBLE
+                bindingProfile.confirmPassContainer.visibility = View.VISIBLE
             }else{
-                binding.oldPassContainer.visibility = View.GONE
-                binding.newPasswordContainer.visibility = View.GONE
-                binding.confirmPassContainer.visibility = View.GONE
+                bindingProfile.oldPassContainer.visibility = View.GONE
+                bindingProfile.newPasswordContainer.visibility = View.GONE
+                bindingProfile.confirmPassContainer.visibility = View.GONE
             }
         }
 
-        binding.tvUpdate.setOnClickListener {
-            val name = binding.nameUp.text.toString()
-            val phone = binding.phoneUp.text.toString()
-            val oldPassword = binding.oldPass.text.toString()
-            val password = binding.newPassword.text.toString()
-            val confirmPass = binding.confirmPass.text.toString()
+        bindingProfile.tvUpdate.setOnClickListener {
+            val name = bindingProfile.nameUp.text.toString()
+            val phone = bindingProfile.phoneUp.text.toString()
+            val oldPassword = bindingProfile.oldPass.text.toString()
+            val password = bindingProfile.newPassword.text.toString()
+            val confirmPass = bindingProfile.confirmPass.text.toString()
 
-            binding.nameContainerUp.helperText = nameValidation(name)
-            binding.phoneContainerUp.helperText = phoneValidation(phone)
-            binding.newPasswordContainer.helperText = passwordValidation(password,oldPassword)
-            binding.confirmPassContainer.helperText = confirmPasswordValidation(confirmPass,password)
+            bindingProfile.nameContainerUp.helperText = nameValidation(name)
+            bindingProfile.phoneContainerUp.helperText = phoneValidation(phone)
+            bindingProfile.newPasswordContainer.helperText = passwordValidation(password,oldPassword)
+            bindingProfile.confirmPassContainer.helperText = confirmPasswordValidation(confirmPass,password)
 
-            if(binding.editPassword.isChecked){
+            if(bindingProfile.editPassword.isChecked){
                 if( nameValidation(name)==""&&
                     phoneValidation(phone)==""&&
                     passwordValidation(password, oldPassword)==""&&
                     confirmPasswordValidation(confirmPass,password)==""){
 
                     if(currentPass != md5(oldPassword)){
-                        binding.oldPassContainer.helperText = "Old password does not match"
+                        bindingProfile.oldPassContainer.helperText = "Old password does not match"
                     }else{
-                        lifecycleScope.launch{
-                            userDao.update(UserEntity(id=id,password= md5(password),email=email,name= name, phoneNum = phone))
+
+                            if(account!=null){
+                                mUserViewModel.updateUser(UserEntity(id=id,password= md5(password),email=email,name= name, phoneNum = phone))
+                            }
+                            binding.tvProfilePhone.text = phone
+                            binding.tvProfileName.text = name
+//                            userDao.update(UserEntity(id=id,password= md5(password),email=email,name= name, phoneNum = phone))
                             session.createLoginSession(id.toString(),email,md5(password),resume,resumeName)
                             Toast.makeText(activity?.applicationContext,"Record Updated.", Toast.LENGTH_LONG).show()
                             updateDialog.dismiss()
-                        }
+
                     }
                 }
             }else{
                 if(nameValidation(name)==""&&
                     phoneValidation(phone)==""){
-                    lifecycleScope.launch{
-                        userDao.update(UserEntity(id=id,password= currentPass,email=email,name= name, phoneNum = phone))
+
+                        if(account!=null){
+                            mUserViewModel.updateUser(UserEntity(id=id,password = currentPass,email=email,name= name, phoneNum = phone))
+                        }
+
+
+//                        if(account!=null) {
+//                            bindingFragment.tvProfileName.text = account.name
+//                            bindingFragment.tvProfilePhone.text = "+60" + account.phoneNum
+//                        }
+                        binding.tvProfilePhone.text = "+60" +phone
+                        binding.tvProfileName.text = name
                         Toast.makeText(activity?.applicationContext,"Record Updated.", Toast.LENGTH_LONG).show()
                         updateDialog.dismiss()
-                    }
+
                 }
             }
         }
 
-        binding.tvCancel.setOnClickListener {
+        bindingProfile.tvCancel.setOnClickListener {
             updateDialog.dismiss()
         }
 
@@ -647,7 +683,7 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun updateEduDialog(id:Int, employeeDao: EduDao, context: Context){
+    private fun updateEduDialog(id:Int, eduDao: EduDao, context: Context){
         val updateDialog= Dialog(context, R.style.Theme_Dialog)
         updateDialog.setCancelable(false)
         val bindingEdu = DialogEducationInfoBinding.inflate(layoutInflater)
@@ -673,7 +709,7 @@ class ProfileFragment : Fragment() {
         bindingEdu.editOldEduLvl.visibility = View.VISIBLE
 
         lifecycleScope.launch{
-            employeeDao.fetchEduById(id).collect{
+            eduDao.fetchEduById(id).collect{
                 if(it != null){
                     bindingEdu.certName.setText(it.eduCert.toString())
                     bindingEdu.schoolName.setText(it.eduSchool.toString())
@@ -714,7 +750,7 @@ class ProfileFragment : Fragment() {
 
             if(certName.isNotEmpty() && schoolName.isNotEmpty()){
                 lifecycleScope.launch{
-                    employeeDao.update(EduEntity(id, email = email, eduCert = certName, eduSchool = schoolName, eduLvl = eduNewLvl, eduEndYear = eduNewEndYear))
+                    eduDao.update(EduEntity(id, email = email, eduCert = certName, eduSchool = schoolName, eduLvl = eduNewLvl, eduEndYear = eduNewEndYear))
                     Toast.makeText(context,"Record Updated.",Toast.LENGTH_LONG).show()
                     updateDialog.dismiss()
                 }

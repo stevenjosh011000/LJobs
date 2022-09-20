@@ -8,11 +8,13 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.ljobs.Edu.LanguageDao
 import com.example.ljobs.Edu.LanguageEntity
 import com.example.ljobs.User.UserDao
 import com.example.ljobs.User.UserEntity
+import com.example.ljobs.User.UserViewModel
 import com.example.ljobs.databinding.ActivityRegisterBinding
 import kotlinx.coroutines.launch
 import java.math.BigInteger
@@ -22,11 +24,12 @@ import java.security.MessageDigest
 class RegisterActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityRegisterBinding
+    private lateinit var mUserViewModel : UserViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_register)
-
+        mUserViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
         setUpActionBar()
         val userDao = (application as UserApp).db.userDao()
         val languageDao = (application as UserApp).db.languageDao()
@@ -129,18 +132,17 @@ class RegisterActivity : AppCompatActivity() {
             binding.phoneContainerRg.helperText = ""
         }
 
-
+        val emailExist = mUserViewModel.emailExist(email)
         lifecycleScope.launch{
 
-            if(userDao.isEmailExist(email)){
+            if(emailExist){
                 Toast.makeText(
                     this@RegisterActivity,
                     "Email has been used",
                     Toast.LENGTH_SHORT
                 ).show()
             }else {
-
-                userDao.insert(UserEntity(email = email, password = md5(password), name = name, phoneNum = phoneNo))
+                mUserViewModel.addUser(UserEntity(email = email, password = md5(password), name = name, phoneNum = phoneNo))
                 languageDao.insert(LanguageEntity(email = email))
                 Toast.makeText(
                     this@RegisterActivity,
