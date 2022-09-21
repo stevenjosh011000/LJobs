@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:name=".UserApp"
@@ -15,6 +16,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
+        android:usesCleartextTraffic="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:screenOrientation="portrait"
         android:supportsRtl="true"
@@ -27,13 +29,7 @@
             android:name=".JobCreateActivity"
             android:exported="false" />
         <activity
-            android:name=".JobActivity"
-            android:exported="false" />
-        <activity
             android:name=".ViewPdfActivity"
-            android:exported="false" />
-        <activity
-            android:name=".EditPasswordActivity"
             android:exported="false" />
         <activity
             android:name=".HomeActivity"

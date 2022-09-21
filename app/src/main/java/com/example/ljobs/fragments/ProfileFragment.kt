@@ -29,18 +29,19 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.android.volley.AuthFailureError
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.example.ljobs.Edu.EduDao
 import com.example.ljobs.Edu.EduEntity
-import com.example.ljobs.Edu.LanguageDao
-import com.example.ljobs.Edu.LanguageEntity
 import com.example.ljobs.EduItemAdapter
 import com.example.ljobs.R
 import com.example.ljobs.Session.LoginPref
-import com.example.ljobs.User.UserDao
 import com.example.ljobs.User.UserEntity
 import com.example.ljobs.User.UserViewModel
 import com.example.ljobs.UserApp
@@ -50,6 +51,7 @@ import com.example.ljobs.databinding.DialogLanguageBinding
 import com.example.ljobs.databinding.DialogProfileUpdateBinding
 import com.example.ljobs.databinding.FragmentProfileBinding
 import kotlinx.coroutines.launch
+import org.json.JSONObject
 import java.io.File
 import java.math.BigInteger
 import java.security.MessageDigest
@@ -60,13 +62,13 @@ class ProfileFragment : Fragment() {
     //region Ini Variables
     lateinit var session : LoginPref
     lateinit var permissionLauncher : ActivityResultLauncher<Array<String>>
-    lateinit var userDao : UserDao
     lateinit var eduDao : EduDao
-    lateinit var languageDao : LanguageDao
     lateinit var resume: String
     lateinit var resumeName: String
     lateinit var binding : FragmentProfileBinding
     private lateinit var mUserViewModel : UserViewModel
+    private val URL: String ="http://10.0.2.2/Ljobs/selectLan.php"
+    private val URLUPDATE: String ="http://10.0.2.2/Ljobs/updateLan.php"
     var id: Int? = null
     var email: String? = null
     var imageBytes : String? = null
@@ -98,13 +100,7 @@ class ProfileFragment : Fragment() {
         resume = user.get(LoginPref.RESUME).toString()
         resumeName = user.get(LoginPref.RESUME_NAME).toString()
         eduDao = (activity?.applicationContext as UserApp).db.eduDao()
-        userDao = (activity?.applicationContext as UserApp).db.userDao()
-        languageDao = (activity?.applicationContext as UserApp).db.languageDao()
-
         mUserViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
-//        mUserViewModel.readAllData.observe(viewLifecycleOwner, Observer { user ->
-//
-//        })
 
         id = user.get(LoginPref.KEY_ID)?.toInt()!!
         binding.tvProfileName.typeface = typeFace
@@ -121,6 +117,8 @@ class ProfileFragment : Fragment() {
             binding.tvProfilePhone.text = "+60" + account.phoneNum
         }
 
+
+
         lifecycleScope.launch{
             eduDao.fetchAllEduByEmail(email!!).collect(){
                 var list = ArrayList(it)
@@ -128,51 +126,72 @@ class ProfileFragment : Fragment() {
             }
         }
 
-        lifecycleScope.launch{
-            languageDao.fetchAllLanByEmail(email!!).collect(){
-                var allLanguages : String = ""
-                var count = 0
-                if(it!=null) {
-                    if(it.english == 1){
-                        allLanguages += "English "
-                        count++
+        if (email != "") {
+            val stringRequest: StringRequest = object : StringRequest(
+                Request.Method.POST, URL,
+                Response.Listener { response ->
+                    val res = response.substring(1,response.length-1)
+                    val json = JSONObject(""+res+"")
+                    var allLanguages : String = ""
+                    var count = 0
+                    if(json!=null) {
+                        if(json.getString("english").toString() == "1"){
+                            allLanguages += "English ,"
+                            count++
+                        }
+                        if(json.getString("chinese").toString() == "1"){
+                            allLanguages += "Chinese ,"
+                            count++
+                        }
+                        if(json.getString("bahasaMelayu").toString() == "1"){
+                            allLanguages += "Bahasa Melayu ,"
+                            count++
+                        }
+                        if(json.getString("tamil").toString() == "1"){
+                            allLanguages += "Tamil ,"
+                            count++
+                        }
+                        if(json.getString("cantonese").toString() == "1"){
+                            allLanguages += "Cantonese ,"
+                            count++
+                        }
+                        if(json.getString("hakka").toString() == "1"){
+                            allLanguages += "Hakka ,"
+                            count++
+                        }
+                        if(json.getString("hokkien").toString() == "1"){
+                            allLanguages += "Hokkien ,"
+                            count++
+                        }
+                        if(json.getString("hindi").toString() == "1"){
+                            allLanguages += "Hindi"
+                            count++
+                        }
+                        if(count == 0){
+                            binding.languages.text = "Please add all the languages you know."
+                        }else {
+                            binding.languages.text = allLanguages
+                            binding.languages.setTextColor(Color.BLACK)
+                        }
                     }
-                    if(it.chinese == 1){
-                        allLanguages += ",Chinese "
-                        count++
-                    }
-                    if(it.bahasaMelayu == 1){
-                        allLanguages += ",Bahasa Melayu "
-                        count++
-                    }
-                    if(it.tamil == 1){
-                        allLanguages += ",Tamil "
-                        count++
-                    }
-                    if(it.cantonese == 1){
-                        allLanguages += ",Cantonese "
-                        count++
-                    }
-                    if(it.hakka == 1){
-                        allLanguages += ",Hakka "
-                        count++
-                    }
-                    if(it.hokkien == 1){
-                        allLanguages += ",Hokkien "
-                        count++
-                    }
-                    if(it.hindi == 1){
-                        allLanguages += ",Hindi "
-                        count++
-                    }
-                    if(count == 0){
-                        binding.languages.text = "Please add all the languages you know."
-                    }else {
-                        binding.languages.text = allLanguages
-                        binding.languages.setTextColor(Color.BLACK)
-                    }
+                },
+                Response.ErrorListener { error ->
+                    Log.e("error", error.toString().trim { it <= ' ' })
+                    Toast.makeText(
+                        context,
+                        error.toString().trim { it <= ' ' },
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }) {
+                @Throws(AuthFailureError::class)
+                override fun getParams(): Map<String, String>? {
+                    val data: MutableMap<String, String> = HashMap()
+                    data["email"] = email!!
+                    return data
                 }
             }
+            val requestQueue = Volley.newRequestQueue(context?.applicationContext)
+            requestQueue.add(stringRequest)
         }
 
 
@@ -237,38 +256,90 @@ class ProfileFragment : Fragment() {
             val bindinglangueges = DialogLanguageBinding.inflate(layoutInflater)
             languageDialog.setContentView(bindinglangueges.root)
 
-            lifecycleScope.launch{
-                languageDao.fetchAllLanByEmail(email!!).collect(){
-
-                    if(it!=null) {
-                        if(it.english == 1){
-                            bindinglangueges.english.isChecked = true
+            if (email != "") {
+                val stringRequest: StringRequest = object : StringRequest(
+                    Request.Method.POST, URL,
+                    Response.Listener { response ->
+                        val res = response.substring(1,response.length-1)
+                        val json = JSONObject(""+res+"")
+                        if(json!=null) {
+                            if(json.getString("english").toString() == "1"){
+                                bindinglangueges.english.isChecked = true
+                            }
+                            if(json.getString("chinese").toString() == "1"){
+                                bindinglangueges.chinese.isChecked = true
+                            }
+                            if(json.getString("bahasaMelayu").toString() == "1"){
+                                bindinglangueges.bahasaMelayu.isChecked = true
+                            }
+                            if(json.getString("tamil").toString() == "1"){
+                                bindinglangueges.tamil.isChecked = true
+                            }
+                            if(json.getString("cantonese").toString() == "1"){
+                                bindinglangueges.cantonese.isChecked = true
+                            }
+                            if(json.getString("hakka").toString() == "1"){
+                                bindinglangueges.hakka.isChecked = true
+                            }
+                            if(json.getString("hokkien").toString() == "1"){
+                                bindinglangueges.hokkien.isChecked = true
+                            }
+                            if(json.getString("hindi").toString() == "1"){
+                                bindinglangueges.hindi.isChecked = true
+                            }
                         }
-                        if(it.chinese == 1){
-                            bindinglangueges.chinese.isChecked = true
-                        }
-                        if(it.bahasaMelayu == 1){
-                            bindinglangueges.bahasaMelayu.isChecked = true
-                        }
-                        if(it.tamil == 1){
-                            bindinglangueges.tamil.isChecked = true
-                        }
-                        if(it.cantonese == 1){
-                            bindinglangueges.cantonese.isChecked = true
-                        }
-                        if(it.hakka == 1){
-                            bindinglangueges.hakka.isChecked = true
-                        }
-                        if(it.hokkien == 1){
-                            bindinglangueges.hokkien .isChecked = true
-                        }
-                        if(it.hindi == 1){
-                            bindinglangueges.hindi.isChecked = true
-                        }
-
+                    },
+                    Response.ErrorListener { error ->
+                        Log.e("error", error.toString().trim { it <= ' ' })
+                        Toast.makeText(
+                            context,
+                            error.toString().trim { it <= ' ' },
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }) {
+                    @Throws(AuthFailureError::class)
+                    override fun getParams(): Map<String, String>? {
+                        val data: MutableMap<String, String> = HashMap()
+                        data["email"] = email!!
+                        return data
                     }
                 }
+                val requestQueue = Volley.newRequestQueue(context?.applicationContext)
+                requestQueue.add(stringRequest)
             }
+
+//            lifecycleScope.launch{
+//                languageDao.fetchAllLanByEmail(email!!).collect(){
+//
+//                    if(it!=null) {
+//                        if(it.english == 1){
+//                            bindinglangueges.english.isChecked = true
+//                        }
+//                        if(it.chinese == 1){
+//                            bindinglangueges.chinese.isChecked = true
+//                        }
+//                        if(it.bahasaMelayu == 1){
+//                            bindinglangueges.bahasaMelayu.isChecked = true
+//                        }
+//                        if(it.tamil == 1){
+//                            bindinglangueges.tamil.isChecked = true
+//                        }
+//                        if(it.cantonese == 1){
+//                            bindinglangueges.cantonese.isChecked = true
+//                        }
+//                        if(it.hakka == 1){
+//                            bindinglangueges.hakka.isChecked = true
+//                        }
+//                        if(it.hokkien == 1){
+//                            bindinglangueges.hokkien .isChecked = true
+//                        }
+//                        if(it.hindi == 1){
+//                            bindinglangueges.hindi.isChecked = true
+//                        }
+//
+//                    }
+//                }
+//            }
 
 
             bindinglangueges.tvUpdate.setOnClickListener {
@@ -313,16 +384,109 @@ class ProfileFragment : Fragment() {
                     hindi = 1
                 }
 
-
-                lifecycleScope.launch{
-                    languageDao.update(english=english, bahasaMelayu = bahasaMelayu, chinese = chinese, cantonese = cantonese, hakka = hakka, hokkien = hokkien, hindi = hindi, tamil = tamil, email = email!!)
-
-                    Toast.makeText(
-                        container?.context!!,
-                        "Updated Successfully",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    languageDialog.dismiss()
+                if (email != "") {
+                    val stringRequest: StringRequest = object : StringRequest(
+                        Request.Method.POST, URLUPDATE,
+                        Response.Listener { response ->
+                            if (response == "success") {
+                                Toast.makeText(context,"Updated Successfully",Toast.LENGTH_SHORT).show()
+                            } else if (response == "failure") {
+                                Toast.makeText(context,"Something went wrong",Toast.LENGTH_SHORT).show()
+                            }
+                        },
+                        Response.ErrorListener { error ->
+                            Log.e("error", error.toString().trim { it <= ' ' })
+                            Toast.makeText(
+                                context?.applicationContext,
+                                error.toString().trim { it <= ' ' },
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }) {
+                        @Throws(AuthFailureError::class)
+                        override fun getParams(): Map<String, String>? {
+                            val data: MutableMap<String, String> = HashMap()
+                            data["email"] = email!!
+                            data["english"] = english.toString()
+                            data["chinese"] = chinese.toString()
+                            data["bahasaMelayu"] = bahasaMelayu.toString()
+                            data["tamil"] = tamil.toString()
+                            data["cantonese"] = cantonese.toString()
+                            data["hakka"] = hakka.toString()
+                            data["hokkien"] = hokkien.toString()
+                            data["hindi"] = hindi.toString()
+                            return data
+                        }
+                    }
+                    val requestQueue = Volley.newRequestQueue(context?.applicationContext)
+                    requestQueue.add(stringRequest)
+                    if (email != "") {
+                        val stringRequest: StringRequest = object : StringRequest(
+                            Request.Method.POST, URL,
+                            Response.Listener { response ->
+                                val res = response.substring(1,response.length-1)
+                                val json = JSONObject(""+res+"")
+                                var allLanguages : String = ""
+                                var count = 0
+                                if(json!=null) {
+                                    if(json.getString("english").toString() == "1"){
+                                        allLanguages += "English ,"
+                                        count++
+                                    }
+                                    if(json.getString("chinese").toString() == "1"){
+                                        allLanguages += "Chinese ,"
+                                        count++
+                                    }
+                                    if(json.getString("bahasaMelayu").toString() == "1"){
+                                        allLanguages += "Bahasa Melayu ,"
+                                        count++
+                                    }
+                                    if(json.getString("tamil").toString() == "1"){
+                                        allLanguages += "Tamil ,"
+                                        count++
+                                    }
+                                    if(json.getString("cantonese").toString() == "1"){
+                                        allLanguages += "Cantonese ,"
+                                        count++
+                                    }
+                                    if(json.getString("hakka").toString() == "1"){
+                                        allLanguages += "Hakka ,"
+                                        count++
+                                    }
+                                    if(json.getString("hokkien").toString() == "1"){
+                                        allLanguages += "Hokkien ,"
+                                        count++
+                                    }
+                                    if(json.getString("hindi").toString() == "1"){
+                                        allLanguages += "Hindi"
+                                        count++
+                                    }
+                                    if(count == 0){
+                                        binding.languages.text = "Please add all the languages you know."
+                                    }else {
+                                        binding.languages.text = allLanguages
+                                        binding.languages.setTextColor(Color.BLACK)
+                                    }
+                                }
+                            },
+                            Response.ErrorListener { error ->
+                                Log.e("error", error.toString().trim { it <= ' ' })
+                                Toast.makeText(
+                                    context,
+                                    error.toString().trim { it <= ' ' },
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }) {
+                            @Throws(AuthFailureError::class)
+                            override fun getParams(): Map<String, String>? {
+                                val data: MutableMap<String, String> = HashMap()
+                                data["email"] = email!!
+                                return data
+                            }
+                        }
+                        val requestQueue = Volley.newRequestQueue(context?.applicationContext)
+                        requestQueue.add(stringRequest)
+                        languageDialog.dismiss()
+                    }
                 }
             }
 
@@ -672,6 +836,7 @@ class ProfileFragment : Fragment() {
                 }
 
             )
+
             binding.rvEduList.layoutManager = LinearLayoutManager(context)
             binding.rvEduList.adapter = itemAdapter
             binding.rvEduList.visibility = View.VISIBLE
@@ -787,6 +952,7 @@ class ProfileFragment : Fragment() {
         alertDialog.setCancelable(false)
         builder.show()
     }
+
 
 
 

@@ -46,6 +46,7 @@ android {
 
 dependencies {
 
+    implementation 'androidx.games:games-activity:1.0.0-rc01'
     def room_version = '2.4.3'
     def activityVersion = '1.5.1'
     def lifecycle_version = '2.5.1'
@@ -75,5 +76,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
+    implementation 'com.android.volley:volley:1.2.1'
 
 }

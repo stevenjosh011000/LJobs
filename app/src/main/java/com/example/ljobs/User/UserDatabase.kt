@@ -6,17 +6,14 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.ljobs.Edu.EduDao
 import com.example.ljobs.Edu.EduEntity
-import com.example.ljobs.Edu.LanguageDao
-import com.example.ljobs.Edu.LanguageEntity
 import com.example.ljobs.Job.JobDao
 import com.example.ljobs.Job.JobEntity
 
 
-@Database(entities = [UserEntity::class,EduEntity::class,LanguageEntity::class, JobEntity::class], version = 10)
+@Database(entities = [UserEntity::class,EduEntity::class, JobEntity::class], version = 11)
 abstract class UserDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun eduDao(): EduDao
-    abstract fun languageDao(): LanguageDao
     abstract fun jobDao(): JobDao
     companion object{
 
