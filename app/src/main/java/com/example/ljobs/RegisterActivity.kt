@@ -32,14 +32,13 @@ class RegisterActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_register)
         mUserViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
         setUpActionBar()
-        val userDao = (application as UserApp).db.userDao()
 
         binding.btnSignUp.setOnClickListener {
-            addUser(userDao)
+            addUser()
         }
     }
 
-    private fun addUser(userDao: UserDao){
+    private fun addUser(){
 
         val email = binding.emailRg.text.toString()
         val password = binding.passwordRg.text.toString()
