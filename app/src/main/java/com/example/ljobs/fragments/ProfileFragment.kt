@@ -8,12 +8,13 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Color
-import android.graphics.Typeface
+import android.graphics.*
+import android.graphics.Bitmap.CompressFormat
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.provider.MediaStore
 import android.provider.Settings
 import android.util.Base64
 import android.util.Log
@@ -42,6 +43,7 @@ import com.example.ljobs.Edu.EduEntity
 import com.example.ljobs.EduItemAdapter
 import com.example.ljobs.R
 import com.example.ljobs.Session.LoginPref
+import com.example.ljobs.User.UserDao
 import com.example.ljobs.User.UserEntity
 import com.example.ljobs.User.UserViewModel
 import com.example.ljobs.UserApp
@@ -52,6 +54,7 @@ import com.example.ljobs.databinding.DialogProfileUpdateBinding
 import com.example.ljobs.databinding.FragmentProfileBinding
 import kotlinx.coroutines.launch
 import org.json.JSONObject
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.math.BigInteger
 import java.security.MessageDigest
@@ -59,12 +62,16 @@ import java.security.MessageDigest
 
 class ProfileFragment : Fragment() {
 
+    var pickedPhoto : Uri? = null
+    var pickedBitMap : Bitmap? = null
     //region Ini Variables
     lateinit var session : LoginPref
     lateinit var permissionLauncher : ActivityResultLauncher<Array<String>>
     lateinit var eduDao : EduDao
+    lateinit var userDao : UserDao
     lateinit var resume: String
     lateinit var resumeName: String
+    lateinit var role : String
     lateinit var binding : FragmentProfileBinding
     private lateinit var mUserViewModel : UserViewModel
     private val URL: String ="http://10.0.2.2/Ljobs/selectLan.php"
@@ -77,19 +84,60 @@ class ProfileFragment : Fragment() {
     var isWritePermissionGranted = false
     var isManagePermissionGranted = false
     var resumeUpdated = false
+    private var startForResult : ActivityResultLauncher<Intent>? = null
     //endregion
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         session = LoginPref(activity?.applicationContext!!)
+
+        startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+
+                val data = result!!.data
+                val sUri: Uri = data?.data!!
+                val path = Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_DOWNLOADS
+                )
+
+                if(data.toString().contains("downloads")){
+                    fileName = DocumentFile.fromSingleUri(context?.applicationContext!!,Uri.parse(sUri.toString()))?.name.toString()
+                    imageBytes = convertToBase64(File(path,fileName))
+
+                    mUserViewModel.updateUser(resume = imageBytes.toString(), resumeName = fileName.toString(), resumeStatus = "1" ,email = email!!)
+                    session.updateResumeSession(resume = imageBytes.toString(), resumeName = fileName.toString())
+                    resume = imageBytes.toString()
+                    resumeName = fileName.toString()
+                    resumeUpdated = true
+
+
+                    binding.resumeNameTv.setText(resumeName)
+                    binding.resume.visibility = View.VISIBLE
+                    binding.resumeTv.visibility = View.GONE
+                    if(resumeName.length > 15) {
+                        binding.resumeNameTv.text = resumeName.substring(0, 15) + "..."
+                    }
+                    binding.resumeNameTv.visibility = View.VISIBLE
+
+
+
+                    Toast.makeText(activity?.applicationContext,"Resume Updated.", Toast.LENGTH_SHORT).show()
+
+
+                }else{
+                    Toast.makeText(activity?.applicationContext,"Please select PDF from downloads folder", Toast.LENGTH_SHORT).show()
+                }
+
+            }
+        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         //region Ini Variables
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_profile, container, false)
@@ -100,6 +148,7 @@ class ProfileFragment : Fragment() {
         resume = user.get(LoginPref.RESUME).toString()
         resumeName = user.get(LoginPref.RESUME_NAME).toString()
         eduDao = (activity?.applicationContext as UserApp).db.eduDao()
+        userDao = (activity?.applicationContext as UserApp).db.userDao()
         mUserViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
 
         id = user.get(LoginPref.KEY_ID)?.toInt()!!
@@ -115,9 +164,27 @@ class ProfileFragment : Fragment() {
             binding.tvProfileName.text = account.name
             binding.tvProfileEmail.text = account.email
             binding.tvProfilePhone.text = "+60" + account.phoneNum
+            role = account.role.toString()
         }
 
+        //region check image
+        val img = mUserViewModel.fetchByEmail(email!!).image
 
+        if(img!=null){
+            val bmp = getImage(img!!)
+            binding.tvProfilePic.visibility = View.GONE
+            binding.image.visibility = View.VISIBLE
+            binding.image.setImageBitmap(bmp)
+        }
+        //endregion
+
+        binding.image.setOnClickListener {
+            pickPhoto()
+        }
+
+        binding.tvProfilePic.setOnClickListener {
+            pickPhoto()
+        }
 
         lifecycleScope.launch{
             eduDao.fetchAllEduByEmail(email!!).collect(){
@@ -229,22 +296,6 @@ class ProfileFragment : Fragment() {
             }else{
                 requestPermission(container?.context!!)
             }
-
-            if (account!=null) {
-                if(account.resumeStatus.toString() == "1") {
-                    binding.resumeNameTv.setText(account.resumeName.toString())
-                    binding.resume.visibility = View.VISIBLE
-                    binding.resumeTv.visibility = View.GONE
-                    if(resumeName.length > 15) {
-                        binding.resumeNameTv.text = resumeName.substring(0, 15) + "..."
-                    }
-                    binding.resumeNameTv.visibility = View.VISIBLE
-
-                }
-            }
-
-
-
         }
         //endregion
 
@@ -308,80 +359,71 @@ class ProfileFragment : Fragment() {
                 requestQueue.add(stringRequest)
             }
 
-//            lifecycleScope.launch{
-//                languageDao.fetchAllLanByEmail(email!!).collect(){
-//
-//                    if(it!=null) {
-//                        if(it.english == 1){
-//                            bindinglangueges.english.isChecked = true
-//                        }
-//                        if(it.chinese == 1){
-//                            bindinglangueges.chinese.isChecked = true
-//                        }
-//                        if(it.bahasaMelayu == 1){
-//                            bindinglangueges.bahasaMelayu.isChecked = true
-//                        }
-//                        if(it.tamil == 1){
-//                            bindinglangueges.tamil.isChecked = true
-//                        }
-//                        if(it.cantonese == 1){
-//                            bindinglangueges.cantonese.isChecked = true
-//                        }
-//                        if(it.hakka == 1){
-//                            bindinglangueges.hakka.isChecked = true
-//                        }
-//                        if(it.hokkien == 1){
-//                            bindinglangueges.hokkien .isChecked = true
-//                        }
-//                        if(it.hindi == 1){
-//                            bindinglangueges.hindi.isChecked = true
-//                        }
-//
-//                    }
-//                }
-//            }
-
-
             bindinglangueges.tvUpdate.setOnClickListener {
 
+                var allLanguages : String = ""
+                var count = 0
                 var english : Int = 0
                 if(bindinglangueges.english.isChecked){
                     english = 1
+                    allLanguages += "English ,"
+                    count++
                 }
 
                 var chinese : Int = 0
                 if(bindinglangueges.chinese.isChecked){
                     chinese = 1
+                    allLanguages += "Chinese ,"
+                    count++
                 }
 
                 var bahasaMelayu : Int = 0
                 if(bindinglangueges.bahasaMelayu.isChecked){
                     bahasaMelayu = 1
+                    allLanguages += "Bahasa Melayu ,"
+                    count++
                 }
 
                 var tamil : Int = 0
                 if(bindinglangueges.tamil.isChecked){
                     tamil = 1
+                    allLanguages += "Tamil ,"
+                    count++
                 }
 
                 var cantonese : Int = 0
                 if(bindinglangueges.cantonese.isChecked){
                     cantonese = 1
+                    allLanguages += "Cantonese ,"
+                    count++
                 }
 
                 var hakka : Int = 0
                 if(bindinglangueges.hakka.isChecked){
                     hakka = 1
+                    allLanguages += "Hakka ,"
+                    count++
                 }
 
                 var hokkien : Int = 0
                 if(bindinglangueges.hokkien.isChecked){
                     hokkien = 1
+                    allLanguages += "Hokkien ,"
+                    count++
                 }
 
                 var hindi : Int = 0
                 if(bindinglangueges.hindi.isChecked){
                     hindi = 1
+                    allLanguages += "Hindi ,"
+                    count++
+                }
+
+                if(count == 0){
+                    binding.languages.text = "Please add all the languages you know."
+                }else {
+                    binding.languages.text = allLanguages
+                    binding.languages.setTextColor(Color.BLACK)
                 }
 
                 if (email != "") {
@@ -419,74 +461,7 @@ class ProfileFragment : Fragment() {
                     }
                     val requestQueue = Volley.newRequestQueue(context?.applicationContext)
                     requestQueue.add(stringRequest)
-                    if (email != "") {
-                        val stringRequest: StringRequest = object : StringRequest(
-                            Request.Method.POST, URL,
-                            Response.Listener { response ->
-                                val res = response.substring(1,response.length-1)
-                                val json = JSONObject(""+res+"")
-                                var allLanguages : String = ""
-                                var count = 0
-                                if(json!=null) {
-                                    if(json.getString("english").toString() == "1"){
-                                        allLanguages += "English ,"
-                                        count++
-                                    }
-                                    if(json.getString("chinese").toString() == "1"){
-                                        allLanguages += "Chinese ,"
-                                        count++
-                                    }
-                                    if(json.getString("bahasaMelayu").toString() == "1"){
-                                        allLanguages += "Bahasa Melayu ,"
-                                        count++
-                                    }
-                                    if(json.getString("tamil").toString() == "1"){
-                                        allLanguages += "Tamil ,"
-                                        count++
-                                    }
-                                    if(json.getString("cantonese").toString() == "1"){
-                                        allLanguages += "Cantonese ,"
-                                        count++
-                                    }
-                                    if(json.getString("hakka").toString() == "1"){
-                                        allLanguages += "Hakka ,"
-                                        count++
-                                    }
-                                    if(json.getString("hokkien").toString() == "1"){
-                                        allLanguages += "Hokkien ,"
-                                        count++
-                                    }
-                                    if(json.getString("hindi").toString() == "1"){
-                                        allLanguages += "Hindi"
-                                        count++
-                                    }
-                                    if(count == 0){
-                                        binding.languages.text = "Please add all the languages you know."
-                                    }else {
-                                        binding.languages.text = allLanguages
-                                        binding.languages.setTextColor(Color.BLACK)
-                                    }
-                                }
-                            },
-                            Response.ErrorListener { error ->
-                                Log.e("error", error.toString().trim { it <= ' ' })
-                                Toast.makeText(
-                                    context,
-                                    error.toString().trim { it <= ' ' },
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }) {
-                            @Throws(AuthFailureError::class)
-                            override fun getParams(): Map<String, String>? {
-                                val data: MutableMap<String, String> = HashMap()
-                                data["email"] = email!!
-                                return data
-                            }
-                        }
-                        val requestQueue = Volley.newRequestQueue(context?.applicationContext)
-                        requestQueue.add(stringRequest)
-                        languageDialog.dismiss()
-                    }
+                    languageDialog.dismiss()
                 }
             }
 
@@ -550,56 +525,12 @@ class ProfileFragment : Fragment() {
     }
 
     //region Choose PDF
-    private val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            result: ActivityResult ->
-        if (result.resultCode == Activity.RESULT_OK) {
 
-                val data = result!!.data
-                val sUri: Uri = data?.data!!
-                val path = Environment.getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_DOWNLOADS
-                )
-
-//                imageBytes = Base64.decode(convertToBase64(File(path,name)), Base64.DEFAULT)
-//              val decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
-
-            if(data.toString().contains("downloads")){
-            fileName = DocumentFile.fromSingleUri(context?.applicationContext!!,Uri.parse(sUri.toString()))?.name.toString()
-            imageBytes = convertToBase64(File(path,fileName))
-
-            mUserViewModel.updateUser(resume = imageBytes.toString(), resumeName = fileName.toString(), resumeStatus = "1" ,email = email!!)
-            session.updateResumeSession(resume = imageBytes.toString(), resumeName = fileName.toString())
-            resume = imageBytes.toString()
-            resumeName = fileName.toString()
-            resumeUpdated = true
-
-            val account = mUserViewModel.fetchByEmail(email!!)
-            if (account!=null) {
-                if(account.resumeStatus.toString() == "1") {
-                    binding.resumeNameTv.setText(account.resumeName.toString())
-                    binding.resume.visibility = View.VISIBLE
-                    binding.resumeTv.visibility = View.GONE
-                    if(resumeName.length > 15) {
-                        binding.resumeNameTv.text = resumeName.substring(0, 15) + "..."
-                    }
-                    binding.resumeNameTv.visibility = View.VISIBLE
-
-                }
-            }
-            Toast.makeText(activity?.applicationContext,"Resume Updated.", Toast.LENGTH_SHORT).show()
-
-
-            }else{
-                Toast.makeText(activity?.applicationContext,"Please select PDF from downloads folder", Toast.LENGTH_SHORT).show()
-            }
-
-        }
-    }
 
     private fun startFileChooser(){
         var intent = Intent(Intent.ACTION_GET_CONTENT)
         intent.setType("application/pdf")
-        startForResult.launch(Intent.createChooser(intent,"Choose PDF"))
+        startForResult?.launch(Intent.createChooser(intent,"Choose PDF"))
     }
 
 
@@ -657,12 +588,12 @@ class ProfileFragment : Fragment() {
                     }else{
 
                             if(account!=null){
-                                mUserViewModel.updateUser(UserEntity(id=id,password= md5(password),email=email,name= name, phoneNum = phone))
+                                mUserViewModel.updateUser(UserEntity(id=id,password= md5(password),email=email,name= name, phoneNum = phone, role = role))
                             }
                             binding.tvProfilePhone.text = phone
                             binding.tvProfileName.text = name
 //                            userDao.update(UserEntity(id=id,password= md5(password),email=email,name= name, phoneNum = phone))
-                            session.createLoginSession(id.toString(),email,md5(password),resume,resumeName)
+                            session.createLoginSession(id.toString(),email,md5(password),resume,resumeName,account.role.toString())
                             Toast.makeText(activity?.applicationContext,"Record Updated.", Toast.LENGTH_LONG).show()
                             updateDialog.dismiss()
 
@@ -673,14 +604,8 @@ class ProfileFragment : Fragment() {
                     phoneValidation(phone)==""){
 
                         if(account!=null){
-                            mUserViewModel.updateUser(UserEntity(id=id,password = currentPass,email=email,name= name, phoneNum = phone))
+                            mUserViewModel.updateUser(UserEntity(id=id,password = currentPass,email=email,name= name, phoneNum = phone, role = role))
                         }
-
-
-//                        if(account!=null) {
-//                            bindingFragment.tvProfileName.text = account.name
-//                            bindingFragment.tvProfilePhone.text = "+60" + account.phoneNum
-//                        }
                         binding.tvProfilePhone.text = "+60" +phone
                         binding.tvProfileName.text = name
                         Toast.makeText(activity?.applicationContext,"Record Updated.", Toast.LENGTH_LONG).show()
@@ -934,6 +859,7 @@ class ProfileFragment : Fragment() {
 
     private fun deleteEduDialog(id:Int, employeeDao: EduDao, context: Context){
         val builder = AlertDialog.Builder(context)
+        builder.setCancelable(false)
         builder.setTitle("Delete Record")
         builder.setIcon(android.R.drawable.ic_dialog_alert)
         builder.setPositiveButton("Yes"){
@@ -953,7 +879,92 @@ class ProfileFragment : Fragment() {
         builder.show()
     }
 
+    private fun pickPhoto(){
+        if (ContextCompat.checkSelfPermission(requireContext(),android.Manifest.permission.READ_EXTERNAL_STORAGE)
+            != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), 1)
+        } else {
+            val galeriIntext = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(galeriIntext,2)
+        }
+    }
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == 1) {
+            if (grantResults.size > 0  && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                val galeriIntext = Intent(Intent.ACTION_PICK,MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                startActivityForResult(galeriIntext,2)
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == 2 && resultCode == Activity.RESULT_OK && data != null) {
+            pickedPhoto = data.data
+            if (pickedPhoto != null) {
+                if (Build.VERSION.SDK_INT >= 28) {
+                    val source = ImageDecoder.createSource(requireContext().contentResolver,pickedPhoto!!)
+                    pickedBitMap = ImageDecoder.decodeBitmap(source)
+                    val bos = ByteArrayOutputStream()
+                    pickedBitMap!!.compress(Bitmap.CompressFormat.PNG, 100, bos)
+                    val bArray: ByteArray = bos.toByteArray()
 
+                    lifecycleScope.launch{
+                        userDao.updateImage(compressImage(bArray),email!!)
+                    }
 
+                    val bmp = getImage(compressImage(bArray))
+
+                    binding.image.visibility = View.VISIBLE
+                    binding.tvProfilePic.visibility = View.GONE
+                    binding.image.setImageBitmap(bmp)
+                }
+                else {
+                    pickedBitMap = MediaStore.Images.Media.getBitmap(requireContext().contentResolver,pickedPhoto)
+                    val bos = ByteArrayOutputStream()
+                    pickedBitMap!!.compress(Bitmap.CompressFormat.PNG, 100, bos)
+                    val bArray: ByteArray = bos.toByteArray()
+
+                    lifecycleScope.launch{
+                        userDao.updateImage(compressImage(bArray),email!!)
+                    }
+
+                    val bmp = getImage(compressImage(bArray))
+
+                    binding.image.visibility = View.VISIBLE
+                    binding.tvProfilePic.visibility = View.GONE
+                    binding.image.setImageBitmap(bmp)
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    // convert from bitmap to byte array
+    fun getBytes(bitmap: Bitmap): ByteArray? {
+        val stream = ByteArrayOutputStream()
+        bitmap.compress(CompressFormat.PNG, 0, stream)
+        return stream.toByteArray()
+    }
+
+    // convert from byte array to bitmap
+    fun getImage(image: ByteArray): Bitmap? {
+        return BitmapFactory.decodeByteArray(image, 0, image.size)
+    }
+    
+    fun compressImage(imageToCompress:ByteArray):ByteArray{
+        var compressImage = imageToCompress
+        while (compressImage.size>500000){
+            val bitmap = BitmapFactory.decodeByteArray(compressImage,0,compressImage.size)
+            val resized = Bitmap.createScaledBitmap(bitmap,(bitmap.width*0.8).toInt(),(bitmap.height*0.8).toInt(),true)
+            val stream = ByteArrayOutputStream()
+            resized.compress(CompressFormat.PNG, 100, stream)
+            compressImage = stream.toByteArray()
+        }
+        return compressImage
+    }
 
 }

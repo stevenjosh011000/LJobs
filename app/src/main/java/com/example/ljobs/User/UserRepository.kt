@@ -1,6 +1,8 @@
 package com.example.ljobs.User
 
+import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
+import java.sql.Blob
 
 class UserRepository (private val userDao: UserDao){
      val readAllData: LiveData<List<UserEntity>> = userDao.readAllData()
@@ -21,9 +23,20 @@ class UserRepository (private val userDao: UserDao){
          return userDao.fetchByEmail(email)
      }
 
+     fun fetchById(id:Int) : UserEntity{
+          return userDao.fetchById(id)
+     }
+
      fun emailExist(email:String) : Boolean {
           return userDao.isEmailExist(email)
      }
 
+     fun updateUserProfile(image: ByteArray?, email: String, name: String, phoneNum: String,role:String, id: Int){
+          userDao.updateUserProfile(image, email, name, phoneNum,role, id)
+     }
+
+     fun deleteUser(id: Int){
+          userDao.deleteUserById(id)
+     }
 
 }

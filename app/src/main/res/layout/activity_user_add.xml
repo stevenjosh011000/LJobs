@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbarUserEditActivity"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize">
+                    <TextView
+                        android:id="@+id/tv_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="Add New User (Admin)"
+                        android:textColor="@color/dark_blue"
+                        android:textSize="@dimen/register_title"
+                        android:layout_marginLeft="@dimen/register_email_margin"
+                        android:textStyle="bold" />
+                </androidx.appcompat.widget.Toolbar>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:elevation="20dp"
+                    app:cardCornerRadius="5dp"
+                    style="?attr/materialCardViewElevatedStyle">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_gravity="center"
+                        android:gravity="center">
+
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/emailContainerRg"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/emailRg"
+                            app:hintTextColor="@color/dark_blue"
+                            android:textColorHint="@color/dark_blue"
+                            android:theme="@style/bottomLineColor"
+                            app:helperTextTextColor="@color/red"
+                            android:padding="@dimen/textInput_padding"
+                            >
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/emailRg"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/passwordContainerRg"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/passwordRg"
+                            android:padding="@dimen/textInput_padding"
+                            app:hintTextColor="@color/dark_blue"
+                            android:textColorHint="@color/dark_blue"
+                            android:theme="@style/bottomLineColor"
+                            app:endIconMode="password_toggle"
+                            app:helperTextTextColor="@color/red"
+                            style="?attr/textInputFilledStyle"
+                            >
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/passwordRg"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textPassword"
+                                />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/confirmPassContainerRg"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/passwordConfirmRg"
+                            android:padding="@dimen/textInput_padding"
+                            app:hintTextColor="@color/dark_blue"
+                            android:textColorHint="@color/dark_blue"
+                            app:endIconMode="password_toggle"
+                            android:theme="@style/bottomLineColor"
+                            app:helperTextTextColor="@color/red"
+                            style="?attr/textInputFilledStyle"
+                            >
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/passwordConRg"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textPassword"
+                                />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/nameContainerRg"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/nameRg"
+                            android:padding="@dimen/textInput_padding"
+                            app:hintTextColor="@color/dark_blue"
+                            android:textColorHint="@color/dark_blue"
+                            android:theme="@style/bottomLineColor"
+                            app:helperTextTextColor="@color/red"
+                            style="?attr/textInputFilledStyle"
+                            >
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/nameRg"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="text"
+                                />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="+60"
+                                android:textColor="@color/black"
+                                android:textSize="18sp"
+                                android:layout_marginLeft="11dp"
+                                android:textStyle="bold"/>
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/phoneContainerRg"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/phoneRg"
+                                android:padding="@dimen/textInput_padding"
+                                app:hintTextColor="@color/dark_blue"
+                                android:textColorHint="@color/dark_blue"
+                                android:theme="@style/bottomLineColor"
+                                app:helperTextTextColor="@color/red"
+                                style="?attr/textInputFilledStyle"
+                                >
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/phoneRg"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="number"
+                                    />
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingBottom="15dp">
+                            <TextView
+                                android:id="@+id/roleTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Role"
+                                android:textColor="@color/black"
+                                android:textSize="18sp"
+                                android:layout_marginLeft="11dp"
+                                android:textStyle="bold"/>
+                            <Spinner
+                                android:id="@+id/roleSpinner"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                />
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/buttonAdd"
+                        android:layout_marginTop="15dp"
+                        android:layout_gravity="center"
+                        android:layout_width="150dp"
+                        android:layout_height="wrap_content"
+                        android:background="@color/dark_blue"
+                        android:gravity="center"
+                        android:paddingTop="@dimen/btn_paddingTopBottom"
+                        android:paddingBottom="@dimen/btn_paddingTopBottom"
+                        android:text="Submit"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/btn_text_size" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+        </ScrollView>
+
+    </LinearLayout>
+</layout>

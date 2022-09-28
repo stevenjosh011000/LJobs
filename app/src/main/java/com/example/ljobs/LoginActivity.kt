@@ -8,8 +8,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.android.volley.AuthFailureError
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.example.ljobs.Session.LoginPref
 import com.example.ljobs.User.UserDao
+import com.example.ljobs.User.UserEntity
 import com.example.ljobs.User.UserViewModel
 import com.example.ljobs.databinding.ActivityLoginBinding
 import kotlinx.coroutines.launch
@@ -22,6 +28,7 @@ class LoginActivity : AppCompatActivity() {
     lateinit var binding : ActivityLoginBinding
     lateinit var session : LoginPref
     private lateinit var mUserViewModel : UserViewModel
+    private val URL: String ="http://10.0.2.2/Ljobs/checkConnection.php"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,15 +50,26 @@ class LoginActivity : AppCompatActivity() {
 
     private fun login(email:String){
 
-        val account = mUserViewModel.fetchByEmail(email)
-//        lifecycleScope.launch{
-//            userDao.fetchUserByEmail(email).collect{
-                if (account != null){
-                    if(account.password == md5(binding.passwordLg.text.toString())){
-                        session.createLoginSession(account.id.toString(),account.email!!,account.password!!,account.resume.toString(),account.resumeName.toString())
-                        val intent = Intent(this@LoginActivity,HomeActivity::class.java)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-                        startActivity(intent)
+
+
+        val stringRequest: StringRequest = object : StringRequest(
+            Request.Method.POST, URL,
+            Response.Listener { response ->
+                if (response == "success") {
+                    val account = mUserViewModel.fetchByEmail(email)
+                    if (account != null){
+                        if(account.password == md5(binding.passwordLg.text.toString())){
+                            session.createLoginSession(account.id.toString(),account.email!!,account.password!!,account.resume.toString(),account.resumeName.toString(),account.role.toString())
+                            val intent = Intent(this@LoginActivity,HomeActivity::class.java)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+                            startActivity(intent)
+                        }else{
+                            Toast.makeText(
+                                this@LoginActivity,
+                                "Invalid Email or Password",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     }else{
                         Toast.makeText(
                             this@LoginActivity,
@@ -61,13 +79,28 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }else{
                     Toast.makeText(
-                        this@LoginActivity,
-                        "Invalid Email or Password",
+                        this,
+                        "Connection failed",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-//            }
-//        }
+            },
+            Response.ErrorListener { error ->
+//                Log.e("error", error.toString().trim { it <= ' ' })
+                Toast.makeText(
+                    this,
+                    "Connection failed",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }) {
+            @Throws(AuthFailureError::class)
+            override fun getParams(): Map<String, String>? {
+                val data: MutableMap<String, String> = HashMap()
+                return data
+            }
+        }
+        val requestQueue = Volley.newRequestQueue(applicationContext)
+        requestQueue.add(stringRequest)
 
     }
 
