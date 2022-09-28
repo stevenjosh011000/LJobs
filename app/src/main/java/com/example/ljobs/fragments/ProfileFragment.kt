@@ -64,6 +64,8 @@ class ProfileFragment : Fragment() {
 
     var pickedPhoto : Uri? = null
     var pickedBitMap : Bitmap? = null
+    var imageLatest : ByteArray? =null
+    var resumeStatus : String? = null
     //region Ini Variables
     lateinit var session : LoginPref
     lateinit var permissionLauncher : ActivityResultLauncher<Array<String>>
@@ -164,6 +166,8 @@ class ProfileFragment : Fragment() {
             binding.tvProfileName.text = account.name
             binding.tvProfileEmail.text = account.email
             binding.tvProfilePhone.text = "+60" + account.phoneNum
+            imageLatest = account.image
+            resumeStatus = account.resumeStatus
             role = account.role.toString()
         }
 
@@ -588,7 +592,12 @@ class ProfileFragment : Fragment() {
                     }else{
 
                             if(account!=null){
-                                mUserViewModel.updateUser(UserEntity(id=id,password= md5(password),email=email,name= name, phoneNum = phone, role = role))
+                                if(resume.isNotEmpty()){
+                                    mUserViewModel.updateUser(UserEntity(id=id,password= md5(password),email=email,name= name, phoneNum = phone, role = role, image = imageLatest, resume = resume, resumeName = resumeName, resumeStatus = "1"))
+                                }else{
+                                    mUserViewModel.updateUser(UserEntity(id=id,password= md5(password),email=email,name= name, phoneNum = phone, role = role, image = imageLatest, resume = resume, resumeName = resumeName, resumeStatus = "0"))
+                                }
+
                             }
                             binding.tvProfilePhone.text = phone
                             binding.tvProfileName.text = name
@@ -604,7 +613,12 @@ class ProfileFragment : Fragment() {
                     phoneValidation(phone)==""){
 
                         if(account!=null){
-                            mUserViewModel.updateUser(UserEntity(id=id,password = currentPass,email=email,name= name, phoneNum = phone, role = role))
+                            if(resume.isNotEmpty()){
+                                mUserViewModel.updateUser(UserEntity(id=id,password = currentPass,email=email,name= name, phoneNum = phone, role = role, image = imageLatest,resume = resume, resumeName = resumeName, resumeStatus = "1"))
+                            }else{
+                                mUserViewModel.updateUser(UserEntity(id=id,password = currentPass,email=email,name= name, phoneNum = phone, role = role, image = imageLatest,resume = resume, resumeName = resumeName, resumeStatus = "0"))
+                            }
+
                         }
                         binding.tvProfilePhone.text = "+60" +phone
                         binding.tvProfileName.text = name
@@ -917,7 +931,7 @@ class ProfileFragment : Fragment() {
                     }
 
                     val bmp = getImage(compressImage(bArray))
-
+                    imageLatest = compressImage(bArray)
                     binding.image.visibility = View.VISIBLE
                     binding.tvProfilePic.visibility = View.GONE
                     binding.image.setImageBitmap(bmp)
@@ -933,7 +947,7 @@ class ProfileFragment : Fragment() {
                     }
 
                     val bmp = getImage(compressImage(bArray))
-
+                    imageLatest = compressImage(bArray)
                     binding.image.visibility = View.VISIBLE
                     binding.tvProfilePic.visibility = View.GONE
                     binding.image.setImageBitmap(bmp)
