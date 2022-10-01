@@ -27,15 +27,17 @@ class LoginPref {
         val KEY_PASS = "password"
         val RESUME = "resume"
         val RESUME_NAME = "resumeName"
+        val ROLE = "role"
     }
 
-    fun createLoginSession(id:String,email:String,password:String,resume:String,resumeName:String){
+    fun createLoginSession(id:String,email:String,password:String,resume:String,resumeName:String,role:String){
         editor.putBoolean(IS_LOGIN,true)
         editor.putString(KEY_ID,id)
         editor.putString(KEY_EMAIL,email)
         editor.putString(KEY_PASS,password)
         editor.putString(RESUME,resume)
         editor.putString(RESUME_NAME,resumeName)
+        editor.putString(ROLE,role)
         editor.commit()
     }
 
@@ -65,6 +67,7 @@ class LoginPref {
         (user as HashMap).put(KEY_PASS, pref.getString(KEY_PASS,null)!!)
         (user as HashMap).put(RESUME, pref.getString(RESUME,null)!!)
         (user as HashMap).put(RESUME_NAME, pref.getString(RESUME_NAME,null)!!)
+        (user as HashMap).put(ROLE, pref.getString(ROLE,null)!!)
         return user
     }
 

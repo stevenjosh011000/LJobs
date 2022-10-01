@@ -1,16 +1,15 @@
 package com.example.ljobs
 
-import android.app.Activity
 import android.content.Context
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.util.Patterns
 import android.view.View
-import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
+import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.android.volley.AuthFailureError
@@ -20,36 +19,52 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.ljobs.User.UserEntity
 import com.example.ljobs.User.UserViewModel
-import com.example.ljobs.databinding.ActivityRegisterBinding
+import com.example.ljobs.databinding.ActivityUserAddBinding
 import java.math.BigInteger
 import java.security.MessageDigest
 
-
-class RegisterActivity : AppCompatActivity() {
-
-    lateinit var binding: ActivityRegisterBinding
-    private lateinit var mUserViewModel : UserViewModel
+class UserAddActivity : AppCompatActivity() {
+    lateinit var binding: ActivityUserAddBinding
+    var roleLatest : String? = "1"
     private val URL: String ="http://10.0.2.2/Ljobs/createLan.php"
-
+    private lateinit var mUserViewModel : UserViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_register)
+        setContentView(R.layout.activity_user_add)
+
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_user_add)
         mUserViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
         setUpActionBar()
 
-        binding.btnSignUp.setOnClickListener {
+        ArrayAdapter.createFromResource(this,R.array.role,android.R.layout.simple_spinner_item).also{
+                adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.roleSpinner.adapter = adapter
+        }
+
+        binding.buttonAdd.setOnClickListener {
+
+            if(binding.roleSpinner.selectedItemPosition==0){
+                roleLatest = "1"
+            }else{
+                roleLatest = "2"
+            }
+
             addUser()
         }
+    }
+
+    fun isValidEmail(target: CharSequence?): Boolean {
+        return !TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches()
     }
 
     private fun addUser(){
 
         val email = binding.emailRg.text.toString()
-        val password = binding.passwordRg.text.toString()
-        val confirmPassword = binding.passwordConRg.text.toString()
         val name = binding.nameRg.text.toString()
         val phoneNo = binding.phoneRg.text.toString()
-
+        val password = binding.passwordRg.text.toString()
+        val confirmPassword = binding.passwordConRg.text.toString()
 
         if(email.isEmpty()){
             binding.emailContainerRg.helperText = "Email is required"
@@ -59,7 +74,6 @@ class RegisterActivity : AppCompatActivity() {
             binding.emailContainerRg.helperText = "Cannot start, end with white-space and consist of few white-spaces in a row"
             return
         }
-
         if(!isValidEmail(email)){
             binding.emailContainerRg.helperText = "Invalid email"
             return
@@ -125,7 +139,8 @@ class RegisterActivity : AppCompatActivity() {
         if(!name.matches("^\\S+(?: \\S+)*\$".toRegex())){
             binding.nameContainerRg.helperText = "Cannot start, end with white-space and consist of few white-spaces in a row"
             return
-        } else
+        }
+        else
         {
             binding.nameContainerRg.helperText = ""
         }
@@ -149,68 +164,63 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         val emailExist = mUserViewModel.emailExist(email)
-//        lifecycleScope.launch{
 
-            if(emailExist){
-                Toast.makeText(
-                    this@RegisterActivity,
-                    "Email has been used",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }else {
-                if (email != "") {
-                    val stringRequest: StringRequest = object : StringRequest(
-                        Request.Method.POST, URL,
-                        Response.Listener { response ->
-                            Log.e("Register",response)
-                            if (response == "success") {
-                                mUserViewModel.addUser(
-                                    UserEntity(
-                                        email = email,
-                                        password = md5(password),
-                                        name = name,
-                                        phoneNum = phoneNo
-                                    )
-                                )
-                                Toast.makeText(
-                                    this@RegisterActivity,
-                                    "Account Created Successfully",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                binding.emailRg.text?.clear()
-                                binding.passwordRg.text?.clear()
-                                binding.passwordConRg.text?.clear()
-                                binding.nameRg.text?.clear()
-                                binding.phoneRg.text?.clear()
-                                hideMyKeyboard(binding.phoneRg)
-                            } else if (response == "failure") {
-                                Toast.makeText(
-                                    this@RegisterActivity,
-                                    "Something went wrong",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                        },
-                        Response.ErrorListener { error ->
-                            Log.e("error", error.toString().trim { it <= ' ' })
-                            Toast.makeText(
-                                applicationContext,
-                                error.toString().trim { it <= ' ' },
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }) {
-                        @Throws(AuthFailureError::class)
-                        override fun getParams(): Map<String, String>? {
-                            val data: MutableMap<String, String> = HashMap()
-                            data["email"] = email!!
-                            return data
-                        }
+        if (emailExist) {
+            Toast.makeText(
+                this@UserAddActivity,
+                "Email has been used",
+                Toast.LENGTH_SHORT
+            ).show()
+        } else {
+            val stringRequest: StringRequest = object : StringRequest(
+                Request.Method.POST, URL,
+                Response.Listener { response ->
+                    if (response == "success") {
+                        mUserViewModel.addUser(
+                            UserEntity(
+                                email = email,
+                                password = md5(password),
+                                name = name,
+                                phoneNum = phoneNo
+                            )
+                        )
+                        Toast.makeText(
+                            this@UserAddActivity,
+                            "Account Created Successfully",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        binding.emailRg.text?.clear()
+                        binding.passwordRg.text?.clear()
+                        binding.passwordConRg.text?.clear()
+                        binding.nameRg.text?.clear()
+                        binding.phoneRg.text?.clear()
+                        hideMyKeyboard(binding.phoneRg)
+                    } else if (response == "failure") {
+                        Toast.makeText(
+                            this@UserAddActivity,
+                            "Something went wrong",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
-                    val requestQueue = Volley.newRequestQueue(applicationContext)
-                    requestQueue.add(stringRequest)
+                },
+                Response.ErrorListener { error ->
+                    Log.e("error", error.toString().trim { it <= ' ' })
+                    Toast.makeText(
+                        applicationContext,
+                        error.toString().trim { it <= ' ' },
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }) {
+                @Throws(AuthFailureError::class)
+                override fun getParams(): Map<String, String>? {
+                    val data: MutableMap<String, String> = HashMap()
+                    data["email"] = email!!
+                    return data
                 }
             }
-//        }
+            val requestQueue = Volley.newRequestQueue(applicationContext)
+            requestQueue.add(stringRequest)
+        }
     }
 
     fun md5(input:String): String {
@@ -219,7 +229,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun setUpActionBar(){
-        setSupportActionBar(binding.toolbarSignUpActivity)
+        setSupportActionBar(binding.toolbarUserEditActivity)
 
         val actionBar = supportActionBar
         if (actionBar != null){
@@ -227,16 +237,11 @@ class RegisterActivity : AppCompatActivity() {
             actionBar.setHomeAsUpIndicator(R.drawable.arrow_back_24)
         }
 
-        binding.toolbarSignUpActivity.setNavigationOnClickListener{onBackPressed()}
+        binding.toolbarUserEditActivity.setNavigationOnClickListener{onBackPressed()}
     }
 
-    fun isValidEmail(target: CharSequence?): Boolean {
-        return !TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches()
+    fun hideMyKeyboard(view: View) {
+        val hideMe = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        hideMe.hideSoftInputFromWindow(view.windowToken,0)
     }
-
-    fun hideMyKeyboard(view:View) {
-            val hideMe = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            hideMe.hideSoftInputFromWindow(view.windowToken,0)
-    }
-
 }
