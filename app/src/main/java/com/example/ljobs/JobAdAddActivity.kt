@@ -15,18 +15,21 @@ class JobAdAddActivity : AppCompatActivity() {
 
     lateinit var binding : ActivityJobAdAddBinding
     private lateinit var mJobViewModel : JobViewModel
+    private lateinit var mUserViewModel : UserViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_job_ad_add)
 
         binding = DataBindingUtil.setContentView(this,R.layout.activity_job_ad_add)
         mJobViewModel = ViewModelProvider(this).get(JobViewModel::class.java)
+        mUserViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
 
         setUpActionBar()
 
+        val manager = mUserViewModel.fetchManager().email
         binding.button2.setOnClickListener {
             if(binding.editTextJobTitle.text.toString()!="" && binding.editTextLocation.text.toString() !="" && binding.editTexteduRequire.text.toString()!="" && binding.editTextSalary.text.toString()!="" && binding.editTextMultiLineJobDesc.text.toString() != "" && binding.editTextType.text.toString()!="" && binding.editTextMultiLineCompanyInfo.text.toString()!=""){
-                mJobViewModel.addJob(JobEntity( title = binding.editTextJobTitle.text.toString(), eduRequirement = binding.editTexteduRequire.text.toString(), salary = binding.editTextSalary.text.toString(), desc = binding.editTextMultiLineJobDesc.text.toString(), type = binding.editTextType.text.toString(), location = binding.editTextLocation.text.toString(), companyInfo = binding.editTextMultiLineCompanyInfo.text.toString(), jobStatus = "1"))
+                mJobViewModel.addJob(JobEntity( title = binding.editTextJobTitle.text.toString(), email = manager.toString(), eduRequirement = binding.editTexteduRequire.text.toString(), salary = binding.editTextSalary.text.toString(), desc = binding.editTextMultiLineJobDesc.text.toString(), type = binding.editTextType.text.toString(), location = binding.editTextLocation.text.toString(), companyInfo = binding.editTextMultiLineCompanyInfo.text.toString(), jobStatus = "1"))
 
                 binding.editTextJobTitle.text.clear()
                 binding.editTexteduRequire.text.clear()

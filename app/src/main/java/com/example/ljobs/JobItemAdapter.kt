@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ljobs.Job.JobEntity
+import com.example.ljobs.Job.JobViewModel
 import com.example.ljobs.JobApplication.JobApplicationEntity
 import com.example.ljobs.User.UserViewModel
 import com.example.ljobs.databinding.JobItemRowBinding
@@ -18,7 +19,6 @@ class JobItemAdapter(private val onClickListener: SelectJobOnClickListener, val 
 
     class ViewHolder(val binding: JobItemRowBinding) : RecyclerView.ViewHolder(binding.root){
         val jobTitle = binding.jobTitle
-        val companyName = binding.companyName
         val location = binding.location
         val salary = binding.salary
     }
@@ -35,10 +35,10 @@ class JobItemAdapter(private val onClickListener: SelectJobOnClickListener, val 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val userViewModel = ViewModelProvider(owner).get(UserViewModel::class.java)
+        val jobViewModel = ViewModelProvider(owner).get(JobViewModel::class.java)
 
         val jobItem = jobList[position]
         holder.jobTitle.text = jobItem.title
-        holder.companyName.text = userViewModel.fetchByEmail(jobItem.email!!).name
         holder.location.text = jobItem.location
         holder.salary.text = jobItem.salary
 

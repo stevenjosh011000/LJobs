@@ -599,7 +599,7 @@ class ProfileFragment : Fragment() {
                                 }
 
                             }
-                            binding.tvProfilePhone.text = phone
+                            binding.tvProfilePhone.text = "+60" +phone
                             binding.tvProfileName.text = name
 //                            userDao.update(UserEntity(id=id,password= md5(password),email=email,name= name, phoneNum = phone))
                             session.createLoginSession(id.toString(),email,md5(password),resume,resumeName,account.role.toString())

@@ -73,4 +73,10 @@ class UserViewModel (application: Application): AndroidViewModel(application) {
         }
     }
 
+    fun fetchManager() : UserEntity {
+        return runBlocking(viewModelScope.coroutineContext) {
+            return@runBlocking repository.fetchManager()
+        }
+    }
+
 }

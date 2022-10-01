@@ -12,7 +12,7 @@ import com.example.ljobs.JobApplication.JobApplicationDao
 import com.example.ljobs.JobApplication.JobApplicationEntity
 
 
-@Database(entities = [UserEntity::class,EduEntity::class, JobEntity::class, JobApplicationEntity::class], version = 15)
+@Database(entities = [UserEntity::class,EduEntity::class, JobEntity::class, JobApplicationEntity::class], version = 16)
 abstract class UserDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun eduDao(): EduDao

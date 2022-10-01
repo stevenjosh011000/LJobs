@@ -48,8 +48,7 @@ class JobDescActivity : AppCompatActivity() {
         jobApplicationViewModel = ViewModelProvider(this).get(JobApplicationViewModel::class.java)
 
 
-        val companyName = userViewModel.fetchByEmail(intent.getStringExtra("EMAIL")!!).name
-        binding.companyName.text = companyName
+//        val companyName = userViewModel.fetchByEmail(intent.getStringExtra("EMAIL")!!).name
         binding.title.text = intent.getStringExtra("TITLE")
         binding.eduRequirement.text = intent.getStringExtra("EDUREQUIREMENT")
         binding.salary.text = intent.getStringExtra("SALARY")

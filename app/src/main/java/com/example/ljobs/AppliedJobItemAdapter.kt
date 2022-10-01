@@ -25,7 +25,6 @@ class AppliedJobItemAdapter(private val onClickListener: SelectJobOnClickListene
 
     class ViewHolder(val binding: MyApplicationItemRowBinding) : RecyclerView.ViewHolder(binding.root){
         val jobTitle = binding.jobTitle
-        val companyName = binding.companyName
         val location = binding.location
         val salary = binding.salary
     }
@@ -46,7 +45,6 @@ class AppliedJobItemAdapter(private val onClickListener: SelectJobOnClickListene
 
         val jobItem = jobList[position]
         holder.jobTitle.text = jobItem.title
-        holder.companyName.text = userViewModel.fetchByEmail(jobItem.email!!).name
         holder.location.text = jobItem.location
         holder.salary.text = jobItem.salary
 

@@ -49,13 +49,11 @@ interface JobDao {
     @Query("SELECT * FROM `job-table` WHERE id IN (SELECT jobId FROM `application-table` WHERE email = :email)")
     fun fetchByApplicationEmail(email: String): List<JobEntity>
 
-    @Query("SELECT * FROM `job-table` WHERE email!=:email AND jobStatus != 'Pending'")
+    @Query("SELECT * FROM `job-table` WHERE email!=:email AND jobStatus != '0'")
     fun fetchByFilteringCurrentUser(email: String): LiveData<List<JobEntity>>
 
     @Query("SELECT EXISTS(SELECT * FROM `job-table` WHERE email = :email)")
     fun isEmailExist(email: String ) : Boolean
-
-
 
     @Update
     fun update(JobEntity: JobEntity)

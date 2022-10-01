@@ -85,7 +85,7 @@ class JobCreateActivity : AppCompatActivity() {
                     location = location,
                     type = jobType,
                     companyInfo = companyInfo,
-                    jobStatus = "Pending"
+                    jobStatus = "0"
                 )
             )
             Toast.makeText(

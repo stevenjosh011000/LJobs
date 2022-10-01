@@ -39,4 +39,8 @@ class UserRepository (private val userDao: UserDao){
           userDao.deleteUserById(id)
      }
 
+     fun fetchManager() : UserEntity{
+          return userDao.fetchManager()
+     }
+
 }

@@ -54,15 +54,6 @@
                     android:textSize="18sp"/>
 
                 <TextView
-                    android:id="@+id/companyName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Company Name"
-
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp"/>
-
-                <TextView
                     android:id="@+id/location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

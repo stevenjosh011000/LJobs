@@ -7,12 +7,7 @@ import androidx.room.PrimaryKey
 import com.example.ljobs.Job.JobEntity
 import java.util.*
 
-@Entity(tableName = "application-table",
-    foreignKeys = [ForeignKey(
-        entity = JobEntity::class,
-        childColumns = ["jobId"],
-        parentColumns = ["id"]
-    )])
+@Entity(tableName = "application-table")
 data class JobApplicationEntity (
 
     @PrimaryKey(autoGenerate = true)

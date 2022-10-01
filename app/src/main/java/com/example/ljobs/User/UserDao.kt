@@ -46,6 +46,9 @@ interface UserDao {
     @Query("DELETE FROM `user-table` WHERE id = :id")
     fun deleteUserById(id: Int)
 
+    @Query("SELECT * FROM `user-table` where Role='3'")
+    fun fetchManager(): UserEntity
+
 
 
 }

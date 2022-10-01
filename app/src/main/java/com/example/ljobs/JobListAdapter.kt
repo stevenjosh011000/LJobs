@@ -35,7 +35,13 @@ class JobListAdapter : RecyclerView.Adapter<JobListAdapter.MyViewHolder>() {
         val currentItem = jobList[position]
         holder.numberJob.text = currentItem.id.toString()
         holder.title.text = currentItem.title.toString()
-        holder.status.text= currentItem.jobStatus.toString()
+        if(currentItem.jobStatus.toString() == "0"){
+            holder.status.text = "PENDING"
+        }else if(currentItem.jobStatus.toString() == "1"){
+            holder.status.text = "APPROVED"
+        }else{
+            holder.status.text = "REJECTED"
+        }
         holder.btnEdit.setOnClickListener {
             val intent = Intent(holder.itemView.context, JobUpdateActivity::class.java)
 
