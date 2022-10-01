@@ -81,7 +81,7 @@ class JobCreateActivity : AppCompatActivity() {
                     title = jobTitle,
                     eduRequirement = eduRequire,
                     salary = salary,
-                    descrip = jobDesc,
+                    desc = jobDesc,
                     location = location,
                     type = jobType,
                     companyInfo = companyInfo,

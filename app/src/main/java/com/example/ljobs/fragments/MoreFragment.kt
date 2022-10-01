@@ -42,6 +42,11 @@ class MoreFragment : Fragment() {
         val binding : FragmentMoreBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_more, container, false)
         var user:HashMap<String,String> = session.getUserDetails()
+
+        mJobViewModel = ViewModelProvider(this).get(JobViewModel::class.java)
+        email = user.get(LoginPref.KEY_EMAIL).toString()
+
+        val isJobPostExist = mJobViewModel.emailExist(email)
         role = user.get(LoginPref.ROLE).toString()
         if(role.toString() == "2" || role.toString() == "3"){
             binding.tvManageJobAd.visibility = View.VISIBLE
@@ -79,11 +84,6 @@ class MoreFragment : Fragment() {
         }
 //Set the visibility of viewing job post
         //If user haven't create any job post, then the "My Job Post" would not appear
-        var user:HashMap<String,String> = session.getUserDetails()
-        mJobViewModel = ViewModelProvider(this).get(JobViewModel::class.java)
-        email = user.get(LoginPref.KEY_EMAIL).toString()
-
-        val isJobPostExist = mJobViewModel.emailExist(email)
         if(isJobPostExist){
             binding.tvMyJobPost.visibility = View.VISIBLE
         }

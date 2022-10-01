@@ -43,7 +43,7 @@ class JobListAdapter : RecyclerView.Adapter<JobListAdapter.MyViewHolder>() {
             intent.putExtra("TITLE", currentItem.title.toString())
             intent.putExtra("EDUREQUIREMENT", currentItem.eduRequirement.toString())
             intent.putExtra("SALARY", currentItem.salary.toString())
-            intent.putExtra("DESCRIPTION", currentItem.descrip.toString())
+            intent.putExtra("DESCRIPTION", currentItem.desc.toString())
             intent.putExtra("LOCATION", currentItem.location.toString())
             intent.putExtra("TYPE", currentItem.type.toString())
             intent.putExtra("COMPANYINFO", currentItem.companyInfo.toString())

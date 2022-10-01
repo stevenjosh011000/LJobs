@@ -14,7 +14,7 @@ interface JobDao {
     fun update(JobEntity: JobEntity)
 */
 
-    @Query("UPDATE `job-table` SET title = :title, eduRequirement = :eduRequirement, salary = :salary, descrip = :desc, location = :location, type=:type, companyInfo= :companyInfo WHERE id = :id")
+    @Query("UPDATE `job-table` SET title = :title, eduRequirement = :eduRequirement, salary = :salary, `desc` = :desc, location = :location, type=:type, companyInfo= :companyInfo WHERE id = :id")
     fun update(title: String,eduRequirement:String, salary:String, desc:String, location:String, type:String, companyInfo:String, id:Int)
 
     @Delete
@@ -54,5 +54,32 @@ interface JobDao {
 
     @Query("SELECT EXISTS(SELECT * FROM `job-table` WHERE email = :email)")
     fun isEmailExist(email: String ) : Boolean
+
+
+
+    @Update
+    fun update(JobEntity: JobEntity)
+
+
+
+    @Query("SELECT * FROM `job-table`")
+    fun fetchAllUsers(): Flow<List<JobEntity>>
+
+
+
+    @Query("SELECT * FROM `job-table` WHERE jobStatus = :jobStatus")
+    fun fetchAllByStatus(jobStatus: String?): LiveData<List<JobEntity>>
+
+    @Query("UPDATE `job-table` SET title = :title,eduRequirement = :eduRequirement,salary = :salary, `desc`= :desc, location = :location,type = :type,companyInfo = :companyInfo,jobStatus = :jobStatus WHERE id = :id")
+    fun update(title: String?,eduRequirement: String?,salary: String?,desc: String?,location: String?,type: String?,companyInfo: String?,jobStatus: String?, id: Int)
+
+    @Query("UPDATE `job-table` SET jobStatus = :jobStatus WHERE id = :id")
+    fun updateStatus(jobStatus: String?, id: Int)
+
+    @Query("DELETE FROM `job-table` WHERE id = :id")
+    fun deleteJobById(id: Int)
+
+    @Query("SELECT * FROM `job-table` where id=:id")
+    fun fetchJobEntityById(id:Int): JobEntity
 
 }

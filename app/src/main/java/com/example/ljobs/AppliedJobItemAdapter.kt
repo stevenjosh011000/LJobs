@@ -75,7 +75,7 @@ class AppliedJobItemAdapter(private val onClickListener: SelectJobOnClickListene
             intent.putExtra("TITLE", jobItem.title.toString())
             intent.putExtra("EDUREQUIREMENT", jobItem.eduRequirement.toString())
             intent.putExtra("SALARY", jobItem.salary.toString())
-            intent.putExtra("DESCRIPTION", jobItem.descrip.toString())
+            intent.putExtra("DESCRIPTION", jobItem.desc.toString())
             intent.putExtra("LOCATION", jobItem.location.toString())
             intent.putExtra("TYPE", jobItem.type.toString())
             intent.putExtra("COMPANYINFO", jobItem.companyInfo.toString())

@@ -49,4 +49,21 @@ class JobRepository (private val JobDao: JobDao){
           return JobDao.fetchByFilteringCurrentUser(email)
      }
 
+
+     fun deleteJobAd(id: Int){
+          JobDao.deleteJobById(id)
+     }
+
+     fun updateJobAd(title: String,eduRequirement: String,salary: String,desc: String,location: String,type: String,companyInfo: String,jobStatus: String, id: Int){
+          JobDao.update(title,eduRequirement,salary,desc,location,type,companyInfo,jobStatus,id)
+     }
+
+     fun fetchAllByStatus(jobStatus: String) : LiveData<List<JobEntity>>{
+          return JobDao.fetchAllByStatus(jobStatus)
+     }
+
+     fun fetchJobEntityById(id: Int) : JobEntity{
+          return JobDao.fetchJobEntityById(id)
+     }
+
 }

@@ -29,7 +29,7 @@ class JobAdManageActivity : AppCompatActivity() {
         val id = intent.getStringExtra("id")
         jobId = id.toString().toInt()
 
-        val job = mJobViewModel.fetchJobById(id.toString().toInt())
+        val job = mJobViewModel.fetchJobEntityById(id.toString().toInt())
         if(job!=null){
             binding.tvJobTitle.text = job.title
             binding.tveduRequire.text = job.eduRequirement

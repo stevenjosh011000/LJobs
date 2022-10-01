@@ -26,7 +26,7 @@ class JobAdEditActivity : AppCompatActivity() {
         val intent = intent
         val id = intent.getStringExtra("id")
 
-        val job = mJobViewModel.fetchJobById(id.toString().toInt())
+        val job = mJobViewModel.fetchJobEntityById(id.toString().toInt())
         if(job!=null){
             binding.editTextJobTitle.setText(job.title)
             binding.editTexteduRequire.setText(job.eduRequirement)

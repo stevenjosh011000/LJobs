@@ -93,5 +93,27 @@ class JobViewModel (application: Application): AndroidViewModel(application) {
     }
 
 
+    fun updateJobAd(title: String,eduRequirement: String,salary: String,desc: String,location: String,type: String,companyInfo: String,jobStatus: String, id: Int){
+        viewModelScope.launch(Dispatchers.IO){
+            repository.updateJobAd(title,eduRequirement,salary,desc,location,type,companyInfo,jobStatus, id)
+        }
+    }
 
+    fun fetchAllByStatus(jobStatus: String) : LiveData<List<JobEntity>>{
+        return runBlocking(viewModelScope.coroutineContext) {
+            return@runBlocking repository.fetchAllByStatus(jobStatus)
+        }
+    }
+
+    fun deleteJobAd(id: Int){
+        viewModelScope.launch(Dispatchers.IO){
+            repository.deleteJobAd(id)
+        }
+    }
+
+    fun fetchJobEntityById(id: Int) : JobEntity{
+        return runBlocking(viewModelScope.coroutineContext) {
+            return@runBlocking repository.fetchJobEntityById(id)
+        }
+    }
 }

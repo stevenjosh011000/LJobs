@@ -34,12 +34,94 @@
             android:layout_height="wrap_content"
             app:dividerColor="@color/dark_gray"/>
 
-
-        <LinearLayout
+        <TextView
+            android:id="@+id/tvMyApplication"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
+            android:text="My Application"
+            android:clickable="true"
+            android:paddingLeft="30dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:textColor="@color/black"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/tvMyJobPost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="My Job Post"
+            android:clickable="true"
+            android:paddingLeft="30dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:visibility="visible"
+            android:textColor="@color/black"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/tvCreateJob"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Create New Job"
+            android:clickable="true"
+            android:paddingLeft="30dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:textColor="@color/black"
+            android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/tvAddJobAd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add New Job Ad"
+                android:clickable="true"
+                android:paddingLeft="30dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:visibility="gone"
+                android:textColor="@color/black"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/tvManageJobAd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Job Ad Management"
+                android:clickable="true"
+                android:paddingLeft="30dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:visibility="gone"
+                android:textColor="@color/black"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/tvManageUser"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="User Management"
+                android:clickable="true"
+                android:paddingLeft="30dp"
+                android:visibility="gone"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:textColor="@color/black"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/tvFeedback"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Feedback"
+                android:clickable="true"
+                android:paddingLeft="30dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:textColor="@color/black"
+                android:textSize="18sp"/>
+
             <TextView
                 android:id="@+id/tvSignOut"
                 android:layout_width="match_parent"
@@ -51,7 +133,6 @@
                 android:paddingBottom="10dp"
                 android:textColor="@color/black"
                 android:textSize="18sp"/>
-        </LinearLayout>
 
     </LinearLayout>
 
