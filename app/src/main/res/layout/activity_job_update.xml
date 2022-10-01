@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="20dp"
                 android:paddingBottom="15dp"
-                android:text="Update Job Ad"
+                android:text="Modify Job Ad"
                 android:textColor="@color/dark_blue"
                 android:textSize="@dimen/register_title"
                 android:textStyle="bold"
@@ -267,7 +267,7 @@
                 android:layout_height="match_parent">
 
                 <Button
-                    android:id="@+id/button2"
+                    android:id="@+id/btnUpdate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -276,11 +276,26 @@
                     android:gravity="center"
                     android:paddingTop="@dimen/btn_paddingTopBottom"
                     android:paddingBottom="@dimen/btn_paddingTopBottom"
-                    android:text="Update"
+                    android:text="Update Job AD"
                     android:textColor="@color/white"
                     android:textSize="@dimen/btn_text_size" />
 
+                <Button
+                    android:id="@+id/btnDelete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/buttonshape"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:gravity="center"
+                    android:paddingTop="@dimen/btn_paddingTopBottom"
+                    android:paddingBottom="@dimen/btn_paddingTopBottom"
+                    android:text="Delete Job Ad"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/btn_text_size" />
             </LinearLayout>
+
+
         </LinearLayout>
 
 

@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.provider.MediaStore
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
+import com.example.ljobs.Job.JobViewModel
 import com.example.ljobs.Session.LoginPref
 import com.example.ljobs.databinding.ActivityHomeBinding
 import com.example.ljobs.fragments.HomeFragment
@@ -13,6 +15,7 @@ import com.example.ljobs.fragments.MoreFragment
 import com.example.ljobs.fragments.ProfileFragment
 
 class HomeActivity : AppCompatActivity() {
+    private lateinit var jobViewModel: JobViewModel
     lateinit var binding : ActivityHomeBinding
 
     private val homeFragment = HomeFragment()
@@ -23,6 +26,8 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_home)
         replaceFragment(homeFragment)
+
+        jobViewModel = ViewModelProvider(this).get(JobViewModel::class.java)
 
         binding.bottomNavigation.setOnItemSelectedListener {
             when(it.itemId){

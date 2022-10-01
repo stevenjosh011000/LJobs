@@ -41,7 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="left"
-                android:layout_weight="1"
+                android:layout_weight="0.8"
                 android:orientation="vertical">
 
                 <TextView
@@ -87,23 +87,25 @@
             <View
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_weight="0.5" />
+                android:layout_weight="0.1" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="end"
+                android:layout_weight="0.1"
                 android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/ivDetails"
-                    android:layout_width="50dp"
+                <Button
+                    android:id="@+id/btnWithdraw"
+                    android:layout_width="100dp"
                     android:layout_height="60dp"
                     android:layout_marginTop="20dp"
-                    android:contentDescription="image"
-                    android:foreground="?attr/selectableItemBackgroundBorderless"
+                    android:text="withdraw"
                     android:scaleType="center"
-                    android:src="@drawable/ic_baseline_chevron_right_24" />
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/red2"
+                    />
 
             </LinearLayout>
 

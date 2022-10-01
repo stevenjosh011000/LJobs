@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:scrollbars="vertical"
+    android:padding="10dp">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Job Application"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Working Experience"
+        android:layout_marginTop="20dp"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"/>
+
+    <CheckBox
+        android:id="@+id/editOldEduLvl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:checked="false"
+        android:visibility="gone"
+        android:text="Change Education Level ?"/>
+
+    <Spinner
+        android:id="@+id/workingExpSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Additional Information"
+        android:layout_marginTop="20dp"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:hintTextColor="@color/dark_blue"
+        android:textColorHint="@color/dark_blue"
+        android:theme="@style/bottomLineColor"
+        app:helperTextTextColor="@color/red"
+        style="?attr/textInputFilledStyle"
+        android:background="@drawable/edit_text_border"
+        >
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tfAdditionalInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="top|start"
+            android:inputType="textMultiLine"
+            android:lines="8"
+            android:padding="5dp"
+            android:background="@null"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="end"
+        android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/tvApply"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:foreground="?attr/selectableItemBackground"
+        android:padding="10dp"
+        android:text="Apply"
+        android:textColor="@android:color/holo_green_dark"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/tvCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:foreground="?attr/selectableItemBackground"
+        android:gravity="center"
+        android:inputType="textEmailAddress"
+        android:padding="10dp"
+        android:text="CANCEL"
+        android:textColor="@color/red"
+        android:textStyle="bold"/>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
+</ScrollView>

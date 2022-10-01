@@ -834,7 +834,6 @@ class ProfileFragment : Fragment() {
                         deleteId ->
                     deleteEduDialog(deleteId,eduDao,context)
                 }
-
             )
 
             binding.rvEduList.layoutManager = LinearLayoutManager(context)

@@ -8,13 +8,17 @@ import com.example.ljobs.Edu.EduDao
 import com.example.ljobs.Edu.EduEntity
 import com.example.ljobs.Job.JobDao
 import com.example.ljobs.Job.JobEntity
+import com.example.ljobs.JobApplication.JobApplicationDao
+import com.example.ljobs.JobApplication.JobApplicationEntity
 
 
-@Database(entities = [UserEntity::class,EduEntity::class, JobEntity::class], version = 11)
+@Database(entities = [UserEntity::class,EduEntity::class, JobEntity::class, JobApplicationEntity::class], version = 15)
 abstract class UserDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun eduDao(): EduDao
     abstract fun jobDao(): JobDao
+    abstract fun jobApplicationDao(): JobApplicationDao
+
     companion object{
 
         @Volatile

@@ -79,7 +79,11 @@
         <item>2021</item>
         <item>2022</item>
         <item>Present</item>
-
-
+    </string-array>
+    <string-array name="workingExp">
+        <item>Less than 1 Years</item>
+        <item>1-5 Years</item>
+        <item>6-10 Years</item>
+        <item>More than 10 Years</item>
     </string-array>
 </resources>
