@@ -66,7 +66,9 @@ class EditUserActivity : AppCompatActivity() {
                 binding.tvProfilePic.visibility = View.GONE
                 binding.image.visibility = View.VISIBLE
                 binding.image.setImageBitmap(bmp)
+                imageLatest = account?.image!!
             }
+
             if(account?.role.toString()=="3"){
                 binding.buttonDelete.visibility = View.GONE
                 binding.buttonEdit.visibility = View.GONE
@@ -130,6 +132,9 @@ class EditUserActivity : AppCompatActivity() {
                     roleLatest = "2"
                 }
             }
+//            if(account!!.image!=null){
+//                imageLatest = account?.image!!
+//            }
             editUser(id.toString(),account?.email.toString())
         }
 
