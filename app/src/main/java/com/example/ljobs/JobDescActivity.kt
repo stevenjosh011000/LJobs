@@ -122,6 +122,10 @@ class JobDescActivity : AppCompatActivity() {
             }
         }
 
+        if(userViewModel.fetchByEmail(email).role == "3"){
+            binding.btnApply.visibility = View.GONE
+        }
+
 
         setContentView(view)
     }

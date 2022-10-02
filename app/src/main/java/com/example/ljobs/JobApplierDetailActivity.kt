@@ -45,7 +45,7 @@ class JobApplierDetailActivity : AppCompatActivity() {
         binding.tvApplierName.setText(applierData.name.toString())
         binding.tvApplierEmail.setText(applierData.email.toString())
         binding.tvApplierPhone.append(applierData.phoneNum.toString())
-        binding.tvApplierResume.setText(applierData.resume.toString())
+       /* binding.tvApplierResume.setText(applierData.resume.toString())*/
 
         val tel = binding.tvApplierPhone.text.toString()
 
@@ -55,6 +55,12 @@ class JobApplierDetailActivity : AppCompatActivity() {
 
         binding.tvApplierPhone.setOnClickListener{
             intentCall(tel)
+        }
+
+        binding.tvApplierResume.setOnClickListener{
+            val intent = Intent(this,JobApplierDetailResumeActivity::class.java)
+            intent.putExtra("EMAIL",applierData.email)
+            startActivity(intent)
         }
         setContentView(view)
     }

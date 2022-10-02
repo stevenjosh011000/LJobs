@@ -189,13 +189,13 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"></View>
 
-                <TextView
+                <Button
                     android:id="@+id/tvApplierResume"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="15dp"
                     android:ems="10"
-                    android:text=""
+                    android:text="View Resume"
                     tools:layout_editor_absoluteX="125dp"
                     tools:layout_editor_absoluteY="43dp" />
 
