@@ -1,15 +1,18 @@
 package com.example.ljobs
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.example.ljobs.Job.JobViewModel
+import com.example.ljobs.Session.LoginPref
 import com.example.ljobs.User.UserViewModel
 import com.example.ljobs.databinding.ActivityJobApplierDetailBinding
 import com.example.ljobs.databinding.MyjoblistRecyclerMainBinding
-
 
 
 class JobApplierDetailActivity : AppCompatActivity() {
@@ -27,6 +30,17 @@ class JobApplierDetailActivity : AppCompatActivity() {
         val email:String = intent.getStringExtra("EMAIL").toString()
 
         val applierData = mUserViewModel.fetchByEmail(email)
+
+        val img = applierData.image
+        if(img!=null){
+            val bmp = getImage(img!!)
+            binding.tvProfilePic.visibility = View.GONE
+            binding.image.visibility = View.VISIBLE
+            binding.image.setImageBitmap(bmp)
+        }
+        else
+            binding.tvProfilePic.text = mUserViewModel.fetchByEmail(email).name?.uppercase()
+
 
         binding.tvApplierName.setText(applierData.name.toString())
         binding.tvApplierEmail.setText(applierData.email.toString())
@@ -57,5 +71,9 @@ class JobApplierDetailActivity : AppCompatActivity() {
         intent.data = Uri.parse("mailto:")
         intent.putExtra(Intent.EXTRA_EMAIL, addresses)
         startActivity(intent)
+    }
+
+    fun getImage(image: ByteArray): Bitmap? {
+        return BitmapFactory.decodeByteArray(image, 0, image.size)
     }
 }

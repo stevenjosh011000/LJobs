@@ -2,13 +2,21 @@ package com.example.ljobs
 
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ljobs.Job.JobEntity
+import com.example.ljobs.Job.JobViewModel
+import com.example.ljobs.Session.LoginPref
+import com.example.ljobs.User.UserViewModel
 import com.example.ljobs.databinding.MyJobRowBinding
 
-class JobListAdapter : RecyclerView.Adapter<JobListAdapter.MyViewHolder>() {
+class JobListAdapter(val owner: ViewModelStoreOwner) : RecyclerView.Adapter<JobListAdapter.MyViewHolder>() {
 
     private var jobList = ArrayList<JobEntity>()
 
@@ -73,6 +81,5 @@ class JobListAdapter : RecyclerView.Adapter<JobListAdapter.MyViewHolder>() {
         this.jobList = job
         notifyDataSetChanged()
     }
-
 
 }

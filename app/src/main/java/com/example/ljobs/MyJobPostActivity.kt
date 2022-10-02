@@ -23,7 +23,7 @@ class MyJobPostActivity : AppCompatActivity() {
         binding = MyjoblistRecyclerMainBinding.inflate(layoutInflater)
         val view = binding.root
         session = LoginPref(this.applicationContext!!)
-        val adapter = JobListAdapter()
+        val adapter = JobListAdapter(this)
         mJobViewModel = ViewModelProvider(this).get(JobViewModel::class.java)
         val recyclerView = binding.rvJobList
         recyclerView.adapter=adapter

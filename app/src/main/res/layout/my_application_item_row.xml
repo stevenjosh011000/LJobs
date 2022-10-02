@@ -25,12 +25,27 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="30dp"
+            <TextView
+                android:id="@+id/tvProfilePic"
+                android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:layout_weight="0.8"
-                tools:srcCompat="@tools:sample/avatars" />
+                android:background="@drawable/circle"
+                android:text="     "
+                android:textColor="@color/white"
+                android:textSize="30sp"
+                android:padding="30sp"
+                />
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:visibility="gone"
+                app:shapeAppearanceOverlay="@style/Circular"
+                android:background="@color/gray"
+                app:strokeWidth="3dp"
+                app:strokeColor="@color/gray"
+                />
 
             <View
                 android:layout_width="0dp"
@@ -58,7 +73,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Location"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="30dp"
                     android:textColor="@android:color/black"
                     android:textSize="14sp"
                     android:drawableLeft="@drawable/ic_baseline_location_on_24"/>

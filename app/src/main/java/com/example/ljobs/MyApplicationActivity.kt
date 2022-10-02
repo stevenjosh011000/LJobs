@@ -22,7 +22,7 @@ class MyApplicationActivity : AppCompatActivity() {
         binding = ActivityMyApplicationBinding.inflate(layoutInflater)
         val view = binding.root
         session = LoginPref(this.applicationContext!!)
-        val adapter = JobItemAdapter(JobItemAdapter.SelectJobOnClickListener{ job -> }, this)
+        val adapter = JobItemAdapter(JobItemAdapter.SelectJobOnClickListener{ job -> }, this,this)
         val recyclerView = binding.rvJobList
         recyclerView.adapter = adapter
         LinearLayoutManager(this).also { recyclerView.layoutManager = it }

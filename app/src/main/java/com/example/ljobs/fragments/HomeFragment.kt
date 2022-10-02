@@ -1,11 +1,13 @@
 package com.example.ljobs.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.ljobs.HomeActivity
 import com.example.ljobs.Job.JobViewModel
 import com.example.ljobs.JobItemAdapter
 import com.example.ljobs.Session.LoginPref
@@ -44,7 +46,7 @@ class HomeFragment : Fragment() {
         val userName = userViewModel.fetchByEmail(email).name
         binding.Uname.text = "Hello $userName"
 
-        val jobItemAdapter = JobItemAdapter(JobItemAdapter.SelectJobOnClickListener{ job -> }, this)
+        val jobItemAdapter = JobItemAdapter(JobItemAdapter.SelectJobOnClickListener{ job -> }, this, requireActivity().applicationContext)
 
         jobViewModel.fetchByFilteringCurrentUser(email).observe(viewLifecycleOwner) {
             jobItemAdapter.setJobList(it)

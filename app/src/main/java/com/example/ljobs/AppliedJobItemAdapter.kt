@@ -3,7 +3,10 @@ package com.example.ljobs
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
@@ -20,6 +23,7 @@ import com.example.ljobs.databinding.MyApplicationItemRowBinding
 class AppliedJobItemAdapter(private val onClickListener: SelectJobOnClickListener, val context: Context, private val owner: ViewModelStoreOwner, val email: String): RecyclerView.Adapter<AppliedJobItemAdapter.ViewHolder>(){
 
     private var jobList = emptyList<JobEntity>()
+    private lateinit var jobViewModel : JobViewModel
     private lateinit var jobApplicationViewModel : JobApplicationViewModel
     lateinit var session : LoginPref
 
@@ -40,13 +44,33 @@ class AppliedJobItemAdapter(private val onClickListener: SelectJobOnClickListene
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        jobViewModel = ViewModelProvider(owner).get(JobViewModel::class.java)
         val userViewModel = ViewModelProvider(owner).get(UserViewModel::class.java)
         val jobApplicationViewModel = ViewModelProvider(owner).get(JobApplicationViewModel::class.java)
+
+        session = LoginPref(context)
+
+        var user:HashMap<String,String> = session.getUserDetails()
+        val email = user.get(LoginPref.KEY_EMAIL).toString()
+        LoginPref(this.context!!)
+
 
         val jobItem = jobList[position]
         holder.jobTitle.text = jobItem.title
         holder.location.text = jobItem.location
         holder.salary.text = jobItem.salary
+
+
+        val img = userViewModel.fetchByEmail(jobItem.email!!).image
+        if(img!=null){
+            val bmp = getImage(img!!)
+            holder.binding.tvProfilePic.visibility = View.GONE
+            holder.binding.image.visibility = View.VISIBLE
+            holder.binding.image.setImageBitmap(bmp)
+        }
+        else
+            holder.binding.tvProfilePic.text = userViewModel.fetchByEmail(jobItem.email!!).name?.uppercase()
+
 
         holder.binding.btnWithdraw.setOnClickListener{
             val builder = AlertDialog.Builder(context)
@@ -89,6 +113,10 @@ class AppliedJobItemAdapter(private val onClickListener: SelectJobOnClickListene
     internal fun setJobList(jobEntity: List<JobEntity>) {
         jobList = jobEntity
         notifyDataSetChanged()
+    }
+
+    fun getImage(image: ByteArray): Bitmap? {
+        return BitmapFactory.decodeByteArray(image, 0, image.size)
     }
 
     class SelectJobOnClickListener (val clickListener: (jobItem: JobEntity) -> Unit) {

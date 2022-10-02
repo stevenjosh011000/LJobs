@@ -1,10 +1,13 @@
 package com.example.ljobs
 
 import android.app.AlertDialog
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.text.TextUtils.isEmpty
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -47,8 +50,16 @@ class JobDescActivity : AppCompatActivity() {
         jobViewModel = ViewModelProvider(this).get(JobViewModel::class.java)
         jobApplicationViewModel = ViewModelProvider(this).get(JobApplicationViewModel::class.java)
 
+        val img = userViewModel.fetchByEmail(jobViewModel.fetchJobEntityById(intent.getIntExtra("ID",0)).email!!).image
+        if(img!=null){
+            val bmp = getImage(img!!)
+            binding.tvProfilePic.visibility = View.GONE
+            binding.image.visibility = View.VISIBLE
+            binding.image.setImageBitmap(bmp)
+        }
+        else
+            binding.tvProfilePic.text = userViewModel.fetchByEmail(intent.getStringExtra("EMAIL").toString()).name?.uppercase()
 
-//        val companyName = userViewModel.fetchByEmail(intent.getStringExtra("EMAIL")!!).name
         binding.title.text = intent.getStringExtra("TITLE")
         binding.eduRequirement.text = intent.getStringExtra("EDUREQUIREMENT")
         binding.salary.text = intent.getStringExtra("SALARY")
@@ -113,6 +124,10 @@ class JobDescActivity : AppCompatActivity() {
 
 
         setContentView(view)
+    }
+
+    fun getImage(image: ByteArray): Bitmap? {
+        return BitmapFactory.decodeByteArray(image, 0, image.size)
     }
 
 }
