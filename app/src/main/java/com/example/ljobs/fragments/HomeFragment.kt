@@ -64,7 +64,7 @@ class HomeFragment() : Fragment() {
             }
         }
         else{
-            jobViewModel.readAllData.observe(viewLifecycleOwner) {
+            jobViewModel.filterPendingJob().observe(viewLifecycleOwner) {
                 jobItemAdapter.setJobList(it)
                 binding.rvJobList.layoutManager!!.scrollToPosition(it.size-1)
             }

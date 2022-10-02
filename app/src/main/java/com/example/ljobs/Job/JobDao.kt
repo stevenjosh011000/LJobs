@@ -33,7 +33,7 @@ interface JobDao {
     fun fetchJobById(id:Int): List<JobEntity>
 
 
-    @Query("SELECT * FROM `job-table` WHERE jobStatus != '0'")
+    @Query("SELECT * FROM `job-table`")
     fun readAllData(): LiveData<List<JobEntity>>
 
 
@@ -43,7 +43,7 @@ interface JobDao {
     @Query("UPDATE `job-table` SET jobStatus = :jobStatus WHERE id = :id")
     fun updateJobStatus(jobStatus: String, id: Int)
 
-    @Query("SELECT * FROM `job-table` WHERE jobStatus != 'Pending' ")
+    @Query("SELECT * FROM `job-table` WHERE jobStatus != '0' ")
     fun filterPendingJob():LiveData<List<JobEntity>>
 
     @Query("SELECT * FROM `job-table` WHERE id IN (SELECT jobId FROM `application-table` WHERE email = :email)")
