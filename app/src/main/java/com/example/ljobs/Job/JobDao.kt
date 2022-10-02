@@ -47,7 +47,7 @@ interface JobDao {
     fun filterPendingJob():LiveData<List<JobEntity>>
 
     @Query("SELECT * FROM `job-table` WHERE id IN (SELECT jobId FROM `application-table` WHERE email = :email)")
-    fun fetchByApplicationEmail(email: String): List<JobEntity>
+    fun fetchByApplicationEmail(email: String): LiveData<List<JobEntity>>
 
     @Query("SELECT * FROM `job-table` WHERE email!=:email AND jobStatus != '0'")
     fun fetchByFilteringCurrentUser(email: String): LiveData<List<JobEntity>>
@@ -79,5 +79,11 @@ interface JobDao {
 
     @Query("SELECT * FROM `job-table` where id=:id")
     fun fetchJobEntityById(id:Int): JobEntity
+
+    @Query("SELECT * FROM `job-table` WHERE jobStatus != '0' AND title LIKE '%' || :searchText || '%'")
+    fun searchData(searchText: String): LiveData<List<JobEntity>>
+
+    @Query("SELECT * FROM `job-table` where email!=:email AND title LIKE '%' || :searchText || '%'")
+    fun fetchByFilteringNSearchData(email:String, searchText: String): LiveData<List<JobEntity>>
 
 }

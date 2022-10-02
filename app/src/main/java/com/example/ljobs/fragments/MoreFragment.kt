@@ -49,6 +49,10 @@ class MoreFragment : Fragment() {
         val isJobPostExist = mJobViewModel.emailExist(email)
         role = user.get(LoginPref.ROLE).toString()
         if(role.toString() == "2" || role.toString() == "3"){
+            binding.tvMyApplication.visibility = View.GONE
+            binding.tvMyJobPost.visibility = View.GONE
+            binding.tvCreateJob.visibility = View.GONE
+            binding.tvFeedback.visibility = View.GONE
             binding.tvManageJobAd.visibility = View.VISIBLE
             binding.tvAddJobAd.visibility = View.VISIBLE
             binding.tvManageUser.visibility = View.VISIBLE

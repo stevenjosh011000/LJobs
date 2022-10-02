@@ -38,7 +38,7 @@ class JobRepository (private val JobDao: JobDao){
           return JobDao.filterPendingJob()
      }
 
-     fun fetchByApplicationEmail(email: String): List<JobEntity> {
+     fun fetchByApplicationEmail(email: String): LiveData<List<JobEntity>> {
           return JobDao.fetchByApplicationEmail(email)
      }
      fun emailExist(email:String) : Boolean {
@@ -65,5 +65,15 @@ class JobRepository (private val JobDao: JobDao){
      fun fetchJobEntityById(id: Int) : JobEntity{
           return JobDao.fetchJobEntityById(id)
      }
+
+     fun searchData(searchText: String): LiveData<List<JobEntity>>{
+          return JobDao.searchData(searchText)
+     }
+
+     fun fetchByFilteringNSearchData(email:String, searchText: String): LiveData<List<JobEntity>>{
+          return JobDao.fetchByFilteringNSearchData(email, searchText)
+     }
+
+
 
 }

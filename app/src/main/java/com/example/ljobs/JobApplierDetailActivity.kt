@@ -31,6 +31,8 @@ class JobApplierDetailActivity : AppCompatActivity() {
 
         val applierData = mUserViewModel.fetchByEmail(email)
 
+        setUpActionBar()
+
         val img = applierData.image
         if(img!=null){
             val bmp = getImage(img!!)
@@ -81,5 +83,17 @@ class JobApplierDetailActivity : AppCompatActivity() {
 
     fun getImage(image: ByteArray): Bitmap? {
         return BitmapFactory.decodeByteArray(image, 0, image.size)
+    }
+
+    private fun setUpActionBar(){
+        setSupportActionBar(binding.toolbarJobAdListActivity)
+
+        val actionBar = supportActionBar
+        if (actionBar != null){
+            actionBar.setDisplayHomeAsUpEnabled(true)
+            actionBar.setHomeAsUpIndicator(R.drawable.arrow_back_24)
+        }
+
+        binding.toolbarJobAdListActivity.setNavigationOnClickListener{onBackPressed()}
     }
 }

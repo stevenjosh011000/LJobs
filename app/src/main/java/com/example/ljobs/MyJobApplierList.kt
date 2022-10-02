@@ -29,7 +29,7 @@ class MyJobApplierList : AppCompatActivity() {
         recyclerView.adapter=adapter
         LinearLayoutManager(this).also { recyclerView.layoutManager = it }
 
-
+        setUpActionBar()
 
         mJobApplicationViewModel = ViewModelProvider(this).get(JobApplicationViewModel::class.java)
 
@@ -37,7 +37,17 @@ class MyJobApplierList : AppCompatActivity() {
 
 
         setContentView(view)
+    }
 
+    private fun setUpActionBar(){
+        setSupportActionBar(binding.toolbarJobAdListActivity)
 
+        val actionBar = supportActionBar
+        if (actionBar != null){
+            actionBar.setDisplayHomeAsUpEnabled(true)
+            actionBar.setHomeAsUpIndicator(R.drawable.arrow_back_24)
+        }
+
+        binding.toolbarJobAdListActivity.setNavigationOnClickListener{onBackPressed()}
     }
 }

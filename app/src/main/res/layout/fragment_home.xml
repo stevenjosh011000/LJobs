@@ -24,6 +24,7 @@
                 android:textStyle="bold"/>
 
             <TextView
+                android:id="@+id/Greeting"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Find your dream jobs at LJobs!"

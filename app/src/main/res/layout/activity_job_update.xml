@@ -7,8 +7,7 @@
     tools:context=".JobUpdateActivity">
 
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -17,18 +16,20 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:paddingBottom="15dp"
-                android:text="Modify Job Ad"
-                android:textColor="@color/dark_blue"
-                android:textSize="@dimen/register_title"
-                android:textStyle="bold"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="16dp" />
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbarJobAdListActivity"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Modify Job AD"
+                    android:textStyle="bold"
+                    android:textColor="@color/dark_blue"
+                    android:textSize="@dimen/register_title"/>
+
+            </androidx.appcompat.widget.Toolbar>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -264,7 +265,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp">
 
                 <Button
                     android:id="@+id/btnUpdate"
@@ -276,9 +278,13 @@
                     android:gravity="center"
                     android:paddingTop="@dimen/btn_paddingTopBottom"
                     android:paddingBottom="@dimen/btn_paddingTopBottom"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="10dp"
                     android:text="Update Job AD"
                     android:textColor="@color/white"
                     android:textSize="@dimen/btn_text_size" />
+
+
 
                 <Button
                     android:id="@+id/btnDelete"
@@ -290,6 +296,8 @@
                     android:gravity="center"
                     android:paddingTop="@dimen/btn_paddingTopBottom"
                     android:paddingBottom="@dimen/btn_paddingTopBottom"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
                     android:text="Delete Job Ad"
                     android:textColor="@color/white"
                     android:textSize="@dimen/btn_text_size" />

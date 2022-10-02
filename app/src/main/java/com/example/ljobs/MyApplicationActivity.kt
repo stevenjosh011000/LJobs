@@ -10,7 +10,7 @@ import com.example.ljobs.JobApplication.JobApplicationViewModel
 import com.example.ljobs.Session.LoginPref
 import com.example.ljobs.databinding.ActivityMyApplicationBinding
 
-class MyApplicationActivity : AppCompatActivity() {
+class MyApplicationActivity: AppCompatActivity() {
 
     private lateinit var binding : ActivityMyApplicationBinding
     private lateinit var jobApplicationViewModel: JobApplicationViewModel
@@ -22,9 +22,9 @@ class MyApplicationActivity : AppCompatActivity() {
         binding = ActivityMyApplicationBinding.inflate(layoutInflater)
         val view = binding.root
         session = LoginPref(this.applicationContext!!)
-        val adapter = JobItemAdapter(JobItemAdapter.SelectJobOnClickListener{ job -> }, this,this)
+        val jobItemAdapter = JobItemAdapter(JobItemAdapter.SelectJobOnClickListener{ job -> }, this,this)
         val recyclerView = binding.rvJobList
-        recyclerView.adapter = adapter
+        recyclerView.adapter = jobItemAdapter
         LinearLayoutManager(this).also { recyclerView.layoutManager = it }
 
         //get current logged in user
@@ -36,9 +36,14 @@ class MyApplicationActivity : AppCompatActivity() {
         jobApplicationViewModel = ViewModelProvider(this).get(JobApplicationViewModel::class.java)
         jobViewModel = ViewModelProvider(this).get(JobViewModel::class.java)
 
-        val jobItemAdapter = AppliedJobItemAdapter(AppliedJobItemAdapter.SelectJobOnClickListener{ job -> }, this, this, email)
+        jobViewModel.fetchByApplicationEmail(email).observe(this) {
+            jobItemAdapter.setJobList(it)
+            binding.rvJobList.layoutManager!!.scrollToPosition(it.size-1)
+        }
 
-        jobItemAdapter.setJobList(jobViewModel.fetchByApplicationEmail(email))
+        val llm = LinearLayoutManager(this.applicationContext)
+        llm.stackFromEnd = true
+        binding.rvJobList.layoutManager = llm
         binding.rvJobList.adapter = jobItemAdapter
 
         setContentView(view)

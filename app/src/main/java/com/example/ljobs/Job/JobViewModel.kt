@@ -62,7 +62,7 @@ class JobViewModel (application: Application): AndroidViewModel(application) {
         }
     }
 
-    fun fetchByApplicationEmail(email: String): List<JobEntity> {
+    fun fetchByApplicationEmail(email: String): LiveData<List<JobEntity>> {
         return repository.fetchByApplicationEmail(email)
     }
 
@@ -115,5 +115,13 @@ class JobViewModel (application: Application): AndroidViewModel(application) {
         return runBlocking(viewModelScope.coroutineContext) {
             return@runBlocking repository.fetchJobEntityById(id)
         }
+    }
+
+    fun searchData(searchText: String): LiveData<List<JobEntity>>{
+        return repository.searchData(searchText)
+    }
+
+    fun fetchByFilteringNSearchData(email:String, searchText: String): LiveData<List<JobEntity>>{
+        return repository.fetchByFilteringNSearchData(email, searchText)
     }
 }

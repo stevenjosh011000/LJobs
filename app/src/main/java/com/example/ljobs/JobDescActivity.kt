@@ -85,6 +85,9 @@ class JobDescActivity : AppCompatActivity() {
                     Toast.makeText(this,"Withdraw Successfully", Toast.LENGTH_LONG).show()
 
                     dialogInterface.dismiss()
+
+                    finish();
+                    startActivity(getIntent());
                 }
                 builder.setNegativeButton("No"){dialogInterface,_->
                     dialogInterface.dismiss()
@@ -118,6 +121,8 @@ class JobDescActivity : AppCompatActivity() {
                             Toast.LENGTH_SHORT
                         ).show()
                         jobApplyDialog.dismiss()
+                        finish();
+                        startActivity(getIntent());
                     }
                 }
 

@@ -21,6 +21,8 @@ class JobUpdateActivity : AppCompatActivity() {
         val view = binding.root
         val intent = getIntent()
 
+        setUpActionBar()
+
         val id: Int = intent.getIntExtra("ID", 0)
         val title:String = intent.getStringExtra("TITLE").toString()
         val eduRequirement:String= intent.getStringExtra("EDUREQUIREMENT").toString()
@@ -131,5 +133,15 @@ class JobUpdateActivity : AppCompatActivity() {
         }
     }
 
+    private fun setUpActionBar(){
+        setSupportActionBar(binding.toolbarJobAdListActivity)
 
+        val actionBar = supportActionBar
+        if (actionBar != null){
+            actionBar.setDisplayHomeAsUpEnabled(true)
+            actionBar.setHomeAsUpIndicator(R.drawable.arrow_back_24)
+        }
+
+        binding.toolbarJobAdListActivity.setNavigationOnClickListener{onBackPressed()}
+    }
 }

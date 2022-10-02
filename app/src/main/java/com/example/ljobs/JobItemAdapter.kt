@@ -12,11 +12,9 @@ import androidx.lifecycle.ViewModelStoreOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ljobs.Job.JobEntity
 import com.example.ljobs.Job.JobViewModel
-import com.example.ljobs.JobApplication.JobApplicationEntity
 import com.example.ljobs.Session.LoginPref
 import com.example.ljobs.User.UserViewModel
 import com.example.ljobs.databinding.JobItemRowBinding
-import java.security.acl.Owner
 
 class JobItemAdapter(private val onClickListener: SelectJobOnClickListener, val owner: ViewModelStoreOwner, val context: Context): RecyclerView.Adapter<JobItemAdapter.ViewHolder>(){
 
@@ -96,5 +94,6 @@ class JobItemAdapter(private val onClickListener: SelectJobOnClickListener, val 
     class SelectJobOnClickListener (val clickListener: (jobItem: JobEntity) -> Unit) {
         fun onClick(jobItem: JobEntity) = clickListener(jobItem)
     }
+
 
 }
