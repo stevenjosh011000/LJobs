@@ -498,14 +498,30 @@ class ProfileFragment : Fragment() {
             }
 
             bindingEduLvl.tvUpdate.setOnClickListener {
-                lifecycleScope.launch{
-                    eduDao.insert(EduEntity(email = email, eduLvl = bindingEduLvl.eduLvlSpinner.selectedItem.toString(), eduCert = bindingEduLvl.certName.text.toString(), eduSchool = bindingEduLvl.schoolName.text.toString(), eduEndYear = bindingEduLvl.eduYearSpinner.selectedItem.toString()))
+                if(bindingEduLvl.certName.text.toString().isNotEmpty() && bindingEduLvl.schoolName.text.toString().isNotEmpty()) {
+                    lifecycleScope.launch {
+                        eduDao.insert(
+                            EduEntity(
+                                email = email,
+                                eduLvl = bindingEduLvl.eduLvlSpinner.selectedItem.toString(),
+                                eduCert = bindingEduLvl.certName.text.toString(),
+                                eduSchool = bindingEduLvl.schoolName.text.toString(),
+                                eduEndYear = bindingEduLvl.eduYearSpinner.selectedItem.toString()
+                            )
+                        )
+                        Toast.makeText(
+                            container?.context!!,
+                            "Inserted Successfully",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        eduDialog.dismiss()
+                    }
+                }else{
                     Toast.makeText(
                         container?.context!!,
-                        "Inserted Successfully",
+                        "Certificate And School Name cannot be blank.",
                         Toast.LENGTH_SHORT
                     ).show()
-                    eduDialog.dismiss()
                 }
             }
 
