@@ -5,19 +5,18 @@
     android:layout_height="match_parent">
 
     <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarJobAdListActivity"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize">
 
         <TextView
-            android:id="@+id/tv_title"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/register_email_margin"
-            android:gravity="center_vertical"
+            android:layout_height="wrap_content"
             android:text="My Job Post"
+            android:textStyle="bold"
             android:textColor="@color/dark_blue"
-            android:textSize="@dimen/register_title"
-            android:textStyle="bold" />
+            android:textSize="@dimen/register_title"/>
+
     </androidx.appcompat.widget.Toolbar>
 
     <androidx.recyclerview.widget.RecyclerView

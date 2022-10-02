@@ -31,6 +31,8 @@ class MyApplicationActivity : AppCompatActivity() {
         var user:HashMap<String,String> = session.getUserDetails()
         val email = user.get(LoginPref.KEY_EMAIL).toString()
 
+        setUpActionBar()
+
         jobApplicationViewModel = ViewModelProvider(this).get(JobApplicationViewModel::class.java)
         jobViewModel = ViewModelProvider(this).get(JobViewModel::class.java)
 
@@ -40,5 +42,17 @@ class MyApplicationActivity : AppCompatActivity() {
         binding.rvJobList.adapter = jobItemAdapter
 
         setContentView(view)
+    }
+
+    private fun setUpActionBar(){
+        setSupportActionBar(binding.toolbarJobAdListActivity)
+
+        val actionBar = supportActionBar
+        if (actionBar != null){
+            actionBar.setDisplayHomeAsUpEnabled(true)
+            actionBar.setHomeAsUpIndicator(R.drawable.arrow_back_24)
+        }
+
+        binding.toolbarJobAdListActivity.setNavigationOnClickListener{onBackPressed()}
     }
 }

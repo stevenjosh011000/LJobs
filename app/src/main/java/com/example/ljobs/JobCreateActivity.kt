@@ -23,12 +23,12 @@ class JobCreateActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_job_create)
         mJobViewModel = ViewModelProvider(this).get(JobViewModel::class.java)
 
+        setUpActionBar()
+
         session = LoginPref(this.applicationContext!!)
         binding.buttonCreate.setOnClickListener {
             addJob()
         }
-
-
 
     }
 
@@ -96,5 +96,16 @@ class JobCreateActivity : AppCompatActivity() {
         }
     }
 
+    private fun setUpActionBar(){
+        setSupportActionBar(binding.toolbarJobAdListActivity)
+
+        val actionBar = supportActionBar
+        if (actionBar != null){
+            actionBar.setDisplayHomeAsUpEnabled(true)
+            actionBar.setHomeAsUpIndicator(R.drawable.arrow_back_24)
+        }
+
+        binding.toolbarJobAdListActivity.setNavigationOnClickListener{onBackPressed()}
+    }
 
 }

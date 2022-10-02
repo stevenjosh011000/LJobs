@@ -19,18 +19,18 @@
                 android:orientation="vertical">
 
                 <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbarJobAdListActivity"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize">
+
                     <TextView
-                        android:id="@+id/tv_title"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:text="Create Job Ad"
+                        android:layout_height="wrap_content"
+                        android:text="Create Job AD"
+                        android:textStyle="bold"
                         android:textColor="@color/dark_blue"
-                        android:textSize="@dimen/register_title"
-                        android:layout_marginLeft="@dimen/register_email_margin"
-                        android:textStyle="bold" />
+                        android:textSize="@dimen/register_title"/>
+
                 </androidx.appcompat.widget.Toolbar>
 
                 <LinearLayout

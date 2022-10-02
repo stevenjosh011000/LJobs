@@ -29,6 +29,8 @@ class MyJobPostActivity : AppCompatActivity() {
         recyclerView.adapter=adapter
         LinearLayoutManager(this).also { recyclerView.layoutManager = it }
 
+        setUpActionBar()
+
         //get current logged in user
         var user:HashMap<String,String> = session.getUserDetails()
         val email = user.get(LoginPref.KEY_EMAIL).toString()
@@ -38,6 +40,18 @@ class MyJobPostActivity : AppCompatActivity() {
         /* mJobViewModel.readAllData.observe(this, Observer { job-> adapter.setData(job as ArrayList<JobEntity>) })
      */
         setContentView(view)
+    }
+
+    private fun setUpActionBar(){
+        setSupportActionBar(binding.toolbarJobAdListActivity)
+
+        val actionBar = supportActionBar
+        if (actionBar != null){
+            actionBar.setDisplayHomeAsUpEnabled(true)
+            actionBar.setHomeAsUpIndicator(R.drawable.arrow_back_24)
+        }
+
+        binding.toolbarJobAdListActivity.setNavigationOnClickListener{onBackPressed()}
     }
 
 

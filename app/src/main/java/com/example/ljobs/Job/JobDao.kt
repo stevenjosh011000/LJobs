@@ -33,7 +33,7 @@ interface JobDao {
     fun fetchJobById(id:Int): List<JobEntity>
 
 
-    @Query("SELECT * FROM `job-table`")
+    @Query("SELECT * FROM `job-table` WHERE jobStatus != '0'")
     fun readAllData(): LiveData<List<JobEntity>>
 
 

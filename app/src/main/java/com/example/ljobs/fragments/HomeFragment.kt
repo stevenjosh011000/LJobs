@@ -48,10 +48,19 @@ class HomeFragment : Fragment() {
 
         val jobItemAdapter = JobItemAdapter(JobItemAdapter.SelectJobOnClickListener{ job -> }, this, requireActivity().applicationContext)
 
-        jobViewModel.fetchByFilteringCurrentUser(email).observe(viewLifecycleOwner) {
-            jobItemAdapter.setJobList(it)
-            binding.rvJobList.layoutManager!!.scrollToPosition(it.size-1)
+        if(userViewModel.fetchByEmail(email).role != "3"){
+            jobViewModel.fetchByFilteringCurrentUser(email).observe(viewLifecycleOwner) {
+                jobItemAdapter.setJobList(it)
+                binding.rvJobList.layoutManager!!.scrollToPosition(it.size-1)
+            }
         }
+        else{
+            jobViewModel.readAllData.observe(viewLifecycleOwner) {
+                jobItemAdapter.setJobList(it)
+                binding.rvJobList.layoutManager!!.scrollToPosition(it.size-1)
+            }
+        }
+
 
         val llm = LinearLayoutManager(activity?.applicationContext)
         llm.stackFromEnd = true

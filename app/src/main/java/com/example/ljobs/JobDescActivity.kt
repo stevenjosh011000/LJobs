@@ -3,6 +3,7 @@ package com.example.ljobs
 import android.app.AlertDialog
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.os.Bundle
 import android.text.TextUtils.isEmpty
 import android.util.Log
@@ -50,6 +51,8 @@ class JobDescActivity : AppCompatActivity() {
         jobViewModel = ViewModelProvider(this).get(JobViewModel::class.java)
         jobApplicationViewModel = ViewModelProvider(this).get(JobApplicationViewModel::class.java)
 
+        setUpActionBar()
+
         val img = userViewModel.fetchByEmail(jobViewModel.fetchJobEntityById(intent.getIntExtra("ID",0)).email!!).image
         if(img!=null){
             val bmp = getImage(img!!)
@@ -71,6 +74,8 @@ class JobDescActivity : AppCompatActivity() {
 
         if(item != null){
             binding.btnApply.text = "WITHDRAW"
+            binding.btnApply.setTextColor(Color.WHITE)
+            binding.btnApply.setBackgroundColor(Color.RED)
             binding.btnApply.setOnClickListener {
                 val builder = AlertDialog.Builder(this)
                 builder.setTitle("Withdraw Application")
@@ -132,6 +137,17 @@ class JobDescActivity : AppCompatActivity() {
 
     fun getImage(image: ByteArray): Bitmap? {
         return BitmapFactory.decodeByteArray(image, 0, image.size)
+    }
+    private fun setUpActionBar(){
+        setSupportActionBar(binding.toolbarJobAdListActivity)
+
+        val actionBar = supportActionBar
+        if (actionBar != null){
+            actionBar.setDisplayHomeAsUpEnabled(true)
+            actionBar.setHomeAsUpIndicator(R.drawable.arrow_back_24)
+        }
+
+        binding.toolbarJobAdListActivity.setNavigationOnClickListener{onBackPressed()}
     }
 
 }
